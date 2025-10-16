@@ -32,6 +32,9 @@ After this, you can add your own custom commands.
 **LINK-Client** is a part of the LINK project.  
 Its purpose is to provide a low-level communication layer, making it easier to create your own LINK-based software.
 
+## Documentation
+All of the documentation for the project can be found at [`.\docs\LINK_Architecture.md`](.\docs\LINK_Architecture.md)
+
 # LEGALS
 
 ## License
