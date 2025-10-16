@@ -1,31 +1,44 @@
 # LINK as a project
 
-LINK is a custom protocol who allows a PC and a USB device to exchange data.
+LINK is a custom protocol that allows a PC and a USB device to exchange data.
 
 ## The purpose
 
-LINK can be modified as needed, only few commands are common between each app.
-With LINK you separate your project by "Application", this way differents LINK application cannot communicate together (as mentionned earlier, LINK can be modified, so it remains possible if you want). Each application is defined by an "APP-ID". All commands respect this architecture : LINK:<APP-ID>:<COMMAND>:<ARGS_0>:<ARGS_1>:<ARGS_n>\0
-Except the "GETAPP" command who is written this way : LINK:GETAPP\0
-The main commands are :
-- GETAPP  (GETAPP is used to retrieve the APP-ID, it can be turned-off)
-- GETV    (GETV is used to retrieve some uncountables about the device, it cannot be turned-off, cause that's the way softwares get the list of available device connected to the PC)
-- RETURN  (RETURN is used to respond to a command, it's followed (in <ARGS_0>) by the command for who he is reponding, it cannot be turned off)
-After this, you can add your own commands.
+LINK can be *modified* as needed — only a few commands are common between all applications.  
+With LINK, you separate your projects by "Application", so different LINK applications cannot communicate with each other (*as mentioned earlier, LINK can be modified, so this behavior can be changed if you want*).  
+Each application is defined by an **APP-ID**.  
+
+All commands follow this structure:  
+**LINK:[APP-ID]:[COMMAND]:[ARGS_0]:[ARGS_1]:[ARGS_n]\0**  
+Except for the **GETAPP** command, which is written as:  
+**LINK:GETAPP\0**
+
+The main commands are:
+- **GETAPP**  
+    - Used to retrieve the APP-ID. It can be disabled if needed.
+- **GETV**  
+    - Used to retrieve general information about the device.  
+      This command cannot be disabled, as it is required for software to detect LINK-compatible devices connected to the PC.
+- **RETURN**  
+    - Used to respond to a command. The first argument (<ARGS_0>) specifies which command it is responding to.  
+      This command cannot be disabled.
+
+After this, you can add your own custom commands.
 
 # LINK-Client
 
 ## Presentation
 
-LINK-Client is a member of the "LINK" project.
-His purpose his to give a low-level layer. It's usefull to create your own LINK software.
+**LINK-Client** is a part of the LINK project.  
+Its purpose is to provide a low-level communication layer, making it easier to create your own LINK-based software.
 
 # LEGALS
 
 ## License
 
-This project is licensed under the Apache License 2.0.  
-You may obtain a copy of the license at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0).  
+This project is licensed under the [Apache License 2.0](./LICENSE).  
+You may obtain a copy of the license at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0),  
+or see the [LICENSE](./LICENSE) file for more details.
 
 ### Permissions
 - Commercial use ✅  
