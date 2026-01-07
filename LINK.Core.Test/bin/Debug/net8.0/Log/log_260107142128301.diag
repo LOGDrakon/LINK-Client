@@ -1,0 +1,21 @@
+2026-01-07T14:21:28.3087941+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Version: 1.9.1+cb5afc3bb9bb01ebd75b57f89e8358b914ee2a49
+2026-01-07T14:21:28.3266377+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging mode: asynchronous
+2026-01-07T14:21:28.3289616+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging level: Information
+2026-01-07T14:21:28.3289769+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION CreateBuilderAsync entry time: 14:21:28.277
+2026-01-07T14:21:28.3295926+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION PID: 138116
+2026-01-07T14:21:28.3297372+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime information: win-x64 - .NET 8.0.20
+2026-01-07T14:21:28.3297540+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime location: C:\Users\MAINTENANCE\tools\dotnet8\shared\Microsoft.NETCore.App\8.0.20\System.Private.CoreLib.dll
+2026-01-07T14:21:28.3297709+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION IsDynamicCodeSupported: True
+2026-01-07T14:21:28.3298311+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Test module: C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Core.Test\bin\Debug\net8.0\LINK.Core.Test.dll
+2026-01-07T14:21:28.3299548+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Command line arguments: '--server --diagnostic --diagnostic-verbosity Information --diagnostic-output-directory C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Core.Test\bin\Debug\net8.0\Log --results-directory C:\Users\MAINTENANCE\source\repos\LINK-Client\TestResults --client-port 61793'
+2026-01-07T14:21:28.3317010+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION TESTINGPLATFORM_DEFAULT_HANG_TIMEOUT: ''
+2026-01-07T14:21:28.3504501+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting RegisterEnvironmentVariablesConfigurationSource: 'True'
+2026-01-07T14:21:28.3656529+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting PlatformExitProcessOnUnhandledException: 'False', config file: False environment variable: 
+2026-01-07T14:21:28.6450046+00:00 Microsoft.Testing.Platform.Requests.TestHostTestFrameworkInvoker INFORMATION Test framework UID: '30ea7c6e-dd24-4152-a360-1387158cd41d' Version: '3.2.1' DisplayName: 'xUnit.net v3 Microsoft.Testing.Platform test framework' Description: 'xUnit.net v3 Microsoft.Testing.Platform test framework'
+2026-01-07T14:21:28.6558287+00:00 xUnit.net INFORMATION xUnit.net v3 In-Process Runner v3.2.1+a9cfb80929 (64-bit .NET 8.0.20)
+2026-01-07T14:21:28.7014381+00:00 xUnit.net INFORMATION   Discovering: LINK.Core.Test
+2026-01-07T14:21:28.7416010+00:00 xUnit.net INFORMATION   Discovered:  LINK.Core.Test
+2026-01-07T14:21:28.7624493+00:00 xUnit.net INFORMATION   Starting:    LINK.Core.Test
+2026-01-07T14:21:28.9408910+00:00 xUnit.net INFORMATION   Finished:    LINK.Core.Test (ID = '2fb0ed669f361f186ddc67a26838cf41f0e3c63d148875b7e7438167766ebc95')
+2026-01-07T14:21:28.9456941+00:00 xUnit.net INFORMATION === TEST EXECUTION SUMMARY ===
+2026-01-07T14:21:28.9541404+00:00 xUnit.net INFORMATION    LINK.Core.Test  Total: 8, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 0,181s

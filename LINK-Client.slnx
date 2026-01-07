@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/docs/">
+    <File Path="docs/LINK_Architecture.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="LINK.Client/LINK.Client.csproj" />
+    <Project Path="LINK.Core/LINK.Core.csproj" />
+    <Project Path="LINK.Transport.Serial/LINK.Transport.Serial.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="LINK.Core.Test/LINK.Core.Test.csproj" />
+  </Folder>
+  <Folder Name="/Éléments de solution/">
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+</Solution>
