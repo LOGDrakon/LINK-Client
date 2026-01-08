@@ -1974,9 +1974,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\LINK.Core.Test\\LINK.Core.Test.csproj",
-      "projectName": "LINK.Core.Test",
-      "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\LINK.Core.Test\\LINK.Core.Test.csproj",
+      "projectUniqueName": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\LINK.Core.Test\\LINK.Core.Tests.csproj",
+      "projectName": "LINK.Core.Tests",
+      "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\LINK.Core.Test\\LINK.Core.Tests.csproj",
       "packagesPath": "C:\\Users\\MAINTENANCE\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\LINK.Core.Test\\obj\\",
       "projectStyle": "PackageReference",

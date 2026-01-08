@@ -1,7 +1,6 @@
 ﻿using Link.Core.Frames;
-using Link.Core.Internal;
 using Link.Core.Transport;
-using LINK.Client.Internal;
+using Link.Client.Internal;
 using System.Collections.Concurrent;
 
 namespace Link.Client;

@@ -8,7 +8,8 @@
     <Project Path="LINK.Transport.Serial/LINK.Transport.Serial.csproj" />
   </Folder>
   <Folder Name="/test/">
-    <Project Path="LINK.Core.Test/LINK.Core.Test.csproj" />
+    <Project Path="LINK.Client.Test/LINK.Client.Tests.csproj" Id="6f96773e-e35d-49f4-8b0d-576aa3321c53" />
+    <Project Path="LINK.Core.Test/LINK.Core.Tests.csproj" />
   </Folder>
   <Folder Name="/Éléments de solution/">
     <File Path="LICENSE" />

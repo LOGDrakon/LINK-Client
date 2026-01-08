@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Link.Core.Frames;
 
-namespace LINK.Client.Internal
+namespace Link.Client.Internal;
+
+internal sealed class PendingCommand
 {
-    internal class PendingCommand
+    public string Command { get; }
+    public TaskCompletionSource<LinkFrame> Tcs { get; }
+
+    public PendingCommand(string command)
     {
+        if (string.IsNullOrWhiteSpace(command))
+            throw new ArgumentException(nameof(command));
+
+        Command = command;
+        Tcs = new TaskCompletionSource<LinkFrame>(
+            TaskCreationOptions.RunContinuationsAsynchronously);
     }
 }

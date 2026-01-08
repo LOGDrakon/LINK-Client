@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Internal\PendingCommand.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Exceptions\" />
+    <Folder Include="Internal\" />
     <Folder Include="Security\" />
   </ItemGroup>
 
