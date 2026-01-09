@@ -1,0 +1,122 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0": {}
+  },
+  "libraries": {},
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj",
+      "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Core\\LINK.Core.csproj",
+      "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Transport.Serial\\LINK.Transport.Serial.csproj"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Example.Console.Basic\\LINK.Example.Console.Basic.csproj",
+      "projectName": "LINK.Example.Console.Basic",
+      "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Example.Console.Basic\\LINK.Example.Console.Basic.csproj",
+      "packagesPath": "C:\\Users\\MAINTENANCE\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Example.Console.Basic\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\MAINTENANCE\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {
+            "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj": {
+              "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj"
+            },
+            "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Core\\LINK.Core.csproj": {
+              "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Core\\LINK.Core.csproj"
+            },
+            "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Transport.Serial\\LINK.Transport.Serial.csproj": {
+              "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Transport.Serial\\LINK.Transport.Serial.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "10.0.100"
+    },
+    "frameworks": {
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  },
+  "logs": [
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "Projet 'C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj' introuvable. Vérifiez que la référence de projet est valide et que le fichier projet existe.",
+      "libraryId": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "Projet 'C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Transport.Serial\\LINK.Transport.Serial.csproj' introuvable. Vérifiez que la référence de projet est valide et que le fichier projet existe.",
+      "libraryId": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Transport.Serial\\LINK.Transport.Serial.csproj",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "Projet 'C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Core\\LINK.Core.csproj' introuvable. Vérifiez que la référence de projet est valide et que le fichier projet existe.",
+      "libraryId": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Core\\LINK.Core.csproj",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
+}

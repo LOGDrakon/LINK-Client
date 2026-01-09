@@ -1,0 +1,6 @@
+C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.Console.Discovery\obj\Debug\net8.0\LINK.Example.Console.Discovery.csproj.AssemblyReference.cache
+C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.Console.Discovery\obj\Debug\net8.0\LINK.Example.Console.Discovery.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.Console.Discovery\obj\Debug\net8.0\LINK.Example.Console.Discovery.AssemblyInfoInputs.cache
+C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.Console.Discovery\obj\Debug\net8.0\LINK.Example.Console.Discovery.AssemblyInfo.cs
+C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.Console.Discovery\obj\Debug\net8.0\LINK.Example.Console.Discovery.csproj.CoreCompileInputs.cache
+C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.Console.Discovery\obj\Debug\net8.0\LINK.Example.Console.Discovery.sourcelink.json

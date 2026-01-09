@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "LINK.Example.WinUI.Discovery (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "LINK.Example.WinUI.Discovery (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

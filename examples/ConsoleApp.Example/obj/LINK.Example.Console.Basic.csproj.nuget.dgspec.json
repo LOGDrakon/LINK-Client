@@ -1,0 +1,304 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\ConsoleApp.Example\\LINK.Example.Console.Basic.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\ConsoleApp.Example\\LINK.Example.Console.Basic.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\ConsoleApp.Example\\LINK.Example.Console.Basic.csproj",
+        "projectName": "LINK.Example.Console.Basic",
+        "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\ConsoleApp.Example\\LINK.Example.Console.Basic.csproj",
+        "packagesPath": "C:\\Users\\MAINTENANCE\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\ConsoleApp.Example\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\MAINTENANCE\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj": {
+                "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj"
+              },
+              "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Core\\LINK.Core.csproj": {
+                "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Core\\LINK.Core.csproj"
+              },
+              "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Transport.Serial\\LINK.Transport.Serial.csproj": {
+                "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Transport.Serial\\LINK.Transport.Serial.csproj"
+              },
+              "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Client\\LINK.Client.csproj": {
+                "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Client\\LINK.Client.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Client\\LINK.Client.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Client\\LINK.Client.csproj",
+        "projectName": "LINK.Client",
+        "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Client\\LINK.Client.csproj",
+        "packagesPath": "C:\\Users\\MAINTENANCE\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Client\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\MAINTENANCE\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Core\\LINK.Core.csproj": {
+                "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Core\\LINK.Core.csproj"
+              },
+              "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Transport.Serial\\LINK.Transport.Serial.csproj": {
+                "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Transport.Serial\\LINK.Transport.Serial.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "System.Management": {
+              "target": "Package",
+              "version": "[10.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Core\\LINK.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Core\\LINK.Core.csproj",
+        "projectName": "LINK.Core",
+        "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Core\\LINK.Core.csproj",
+        "packagesPath": "C:\\Users\\MAINTENANCE\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\MAINTENANCE\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Transport.Serial\\LINK.Transport.Serial.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Transport.Serial\\LINK.Transport.Serial.csproj",
+        "projectName": "LINK.Transport.Serial",
+        "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Transport.Serial\\LINK.Transport.Serial.csproj",
+        "packagesPath": "C:\\Users\\MAINTENANCE\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Transport.Serial\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\MAINTENANCE\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Core\\LINK.Core.csproj": {
+                "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Core\\LINK.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "System.IO.Ports": {
+              "target": "Package",
+              "version": "[10.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

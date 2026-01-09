@@ -1,0 +1,25 @@
+﻿using System;
+using Link.Client.Discovery;
+using Link.Transport.Serial;
+
+namespace LINK.Example.WinUI.Discovery.ViewModels;
+
+public sealed class MainViewModel
+{
+    public LinkDeviceWatcher Watcher { get; }
+
+    public MainViewModel()
+    {
+        Watcher = new LinkDeviceWatcher(
+            port => new LinkSerialTransport(new LinkSerialOptions
+            {
+                PortName = port,
+                BaudRate = 115200
+            }),
+            timeout: TimeSpan.FromMilliseconds(800),
+            appIdFilter: null
+        );
+
+        Watcher.Start();
+    }
+}
