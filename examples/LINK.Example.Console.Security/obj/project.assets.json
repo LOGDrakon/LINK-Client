@@ -1870,7 +1870,6 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj",
       "LINK.Client >= 1.0.0"
     ]
   },
@@ -1906,9 +1905,6 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj": {
-              "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj"
-            },
             "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Client\\LINK.Client.csproj": {
               "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Client\\LINK.Client.csproj"
             }
@@ -1949,16 +1945,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1104",
-      "level": "Error",
-      "message": "Projet 'C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj' introuvable. Vérifiez que la référence de projet est valide et que le fichier projet existe.",
-      "libraryId": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    }
-  ]
+  }
 }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LINK.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad2da7525f8476d364d2895d7473b79e27bbd9ea")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+42e2aaeb57ba4a2363d0021ac9975bebaf32e8cb")]
 [assembly: System.Reflection.AssemblyProductAttribute("LINK.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LINK.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "dgSpecHash": "LVEzPaAHygU=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Example.Console.Security\\LINK.Example.Console.Security.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.android-arm.runtime.native.system.io.ports\\10.0.1\\runtime.android-arm.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.android-arm64.runtime.native.system.io.ports\\10.0.1\\runtime.android-arm64.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.android-x64.runtime.native.system.io.ports\\10.0.1\\runtime.android-x64.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.android-x86.runtime.native.system.io.ports\\10.0.1\\runtime.android-x86.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.linux-arm.runtime.native.system.io.ports\\10.0.1\\runtime.linux-arm.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.linux-arm64.runtime.native.system.io.ports\\10.0.1\\runtime.linux-arm64.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.linux-bionic-arm64.runtime.native.system.io.ports\\10.0.1\\runtime.linux-bionic-arm64.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.linux-bionic-x64.runtime.native.system.io.ports\\10.0.1\\runtime.linux-bionic-x64.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.linux-musl-arm.runtime.native.system.io.ports\\10.0.1\\runtime.linux-musl-arm.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.linux-musl-arm64.runtime.native.system.io.ports\\10.0.1\\runtime.linux-musl-arm64.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.linux-musl-x64.runtime.native.system.io.ports\\10.0.1\\runtime.linux-musl-x64.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.linux-x64.runtime.native.system.io.ports\\10.0.1\\runtime.linux-x64.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.maccatalyst-arm64.runtime.native.system.io.ports\\10.0.1\\runtime.maccatalyst-arm64.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.maccatalyst-x64.runtime.native.system.io.ports\\10.0.1\\runtime.maccatalyst-x64.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.native.system.io.ports\\10.0.1\\runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.osx-arm64.runtime.native.system.io.ports\\10.0.1\\runtime.osx-arm64.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\runtime.osx-x64.runtime.native.system.io.ports\\10.0.1\\runtime.osx-x64.runtime.native.system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\system.codedom\\10.0.1\\system.codedom.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\system.io.ports\\10.0.1\\system.io.ports.10.0.1.nupkg.sha512",
+    "C:\\Users\\MAINTENANCE\\.nuget\\packages\\system.management\\10.0.1\\system.management.10.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -8,9 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LINK.Client\LINK.Client.csproj" />
-    <ProjectReference Include="..\LINK.Core\LINK.Core.csproj" />
-    <ProjectReference Include="..\LINK.Transport.Serial\LINK.Transport.Serial.csproj" />
+    <ProjectReference Include="..\..\src\LINK.Client\LINK.Client.csproj" />
   </ItemGroup>
 
 </Project>

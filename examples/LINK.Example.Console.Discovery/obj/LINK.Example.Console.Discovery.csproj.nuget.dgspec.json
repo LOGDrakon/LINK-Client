@@ -32,9 +32,6 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj": {
-                "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\examples\\LINK.Client\\LINK.Client.csproj"
-              },
               "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Client\\LINK.Client.csproj": {
                 "projectPath": "C:\\Users\\MAINTENANCE\\source\\repos\\LINK-Client\\src\\LINK.Client\\LINK.Client.csproj"
               }

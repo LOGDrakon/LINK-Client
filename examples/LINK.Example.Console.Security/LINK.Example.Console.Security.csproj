@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\LINK.Client\LINK.Client.csproj" />
-    <ProjectReference Include="..\LINK.Client\LINK.Client.csproj" />
   </ItemGroup>
 
 </Project>

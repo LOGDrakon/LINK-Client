@@ -41,7 +41,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LINK.Client\LINK.Client.csproj" />
+    <ProjectReference Include="..\..\src\LINK.Client\LINK.Client.csproj" />
   </ItemGroup>
 
   <!--

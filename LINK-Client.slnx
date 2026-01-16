@@ -1,37 +1,58 @@
 <Solution>
+
   <Folder Name="/docs/">
     <File Path="docs/LINK_Architecture.md" />
   </Folder>
-  <Folder Name="/Examples/" />
-  <Folder Name="/Examples/LINK.Example.Console.Basic/">
-    <Project Path="examples/LINK.Example.Console.Basic/LINK.Example.Console.Basic.csproj" Id="f16d9ece-c66c-4611-ba89-fe5bcb0bf6e7" />
-  </Folder>
-  <Folder Name="/Examples/LINK.Example.Console.Discovery/">
-    <Project Path="examples/LINK.Example.Console.Discovery/LINK.Example.Console.Discovery.csproj" Id="5e41d40e-ded8-46bb-94e9-ef4c32357ffa" />
-  </Folder>
-  <Folder Name="/Examples/LINK.Example.Console.Security/">
-    <Project Path="examples/LINK.Example.Console.Security/LINK.Example.Console.Security.csproj" Id="a42e5808-cf13-42e9-8c3b-e078751100d2" />
-  </Folder>
-  <Folder Name="/Examples/LINK.Example.WinUI.Discovery/">
-    <Project Path="examples/LINK.Example.WinUI.Discovery/LINK.Example.WinUI.Discovery.csproj" Id="2b1dde22-a99b-4d88-bc84-5548aac3401f">
-      <Platform Project="x64" />
-      <Deploy />
-    </Project>
-  </Folder>
-  <Folder Name="/Examples/LINK.Example.WPF.Discovery/">
-    <Project Path="examples/LINK.Example.WPF.Discovery/LINK.Example.WPF.Discovery.csproj" Id="83333c92-4ab9-4586-9a49-ceee8b1af08b" />
-  </Folder>
+
   <Folder Name="/src/">
     <Project Path="src/LINK.Client/LINK.Client.csproj" />
     <Project Path="src/LINK.Core/LINK.Core.csproj" />
     <Project Path="src/LINK.Transport.Serial/LINK.Transport.Serial.csproj" />
   </Folder>
-  <Folder Name="/tests/">
-    <Project Path="tests/LINK.Client.Test/LINK.Client.Tests.csproj" Id="6f96773e-e35d-49f4-8b0d-576aa3321c53" />
-    <Project Path="tests/LINK.Core.Test/LINK.Core.Tests.csproj" />
+
+  <Folder Name="/examples/">
+
+    <Folder Name="/examples/LINK.Example.Console.Basic/">
+      <Project Path="examples/LINK.Example.Console.Basic/LINK.Example.Console.Basic.csproj" />
+    </Folder>
+
+    <Folder Name="/examples/LINK.Example.Console.Discovery/">
+      <Project Path="examples/LINK.Example.Console.Discovery/LINK.Example.Console.Discovery.csproj" />
+    </Folder>
+
+    <Folder Name="/examples/LINK.Example.Console.Security/">
+      <Project Path="examples/LINK.Example.Console.Security/LINK.Example.Console.Security.csproj" />
+    </Folder>
+
+    <Folder Name="/examples/LINK.Example.WPF.Discovery/">
+      <Project Path="examples/LINK.Example.WPF.Discovery/LINK.Example.WPF.Discovery.csproj" />
+    </Folder>
+
+    <Folder Name="/examples/LINK.Example.WinUI.Discovery/">
+      <Project Path="examples/LINK.Example.WinUI.Discovery/LINK.Example.WinUI.Discovery.csproj">
+        <Platform Project="x64" />
+        <Deploy />
+      </Project>
+    </Folder>
+    <Project Path="examples/LINK.Example.Console.Basic/LINK.Example.Console.Basic.csproj" />
+    <Project Path="examples/LINK.Example.Console.Discovery/LINK.Example.Console.Discovery.csproj" />
+    <Project Path="examples/LINK.Example.Console.Security/LINK.Example.Console.Security.csproj" />
+    <Project Path="examples/LINK.Example.WinUI.Discovery/LINK.Example.WinUI.Discovery.csproj">
+      <Platform Project="x64" />
+      <Deploy />
+    </Project>
+    <Project Path="examples/LINK.Example.WPF.Discovery/LINK.Example.WPF.Discovery.csproj" />
+
   </Folder>
+
+  <Folder Name="/tests/">
+    <Project Path="tests/LINK.Client.Tests/LINK.Client.Tests.csproj" />
+    <Project Path="tests/LINK.Core.Tests/LINK.Core.Tests.csproj" />
+  </Folder>
+
   <Folder Name="/Éléments de solution/">
     <File Path="LICENSE" />
     <File Path="README.md" />
   </Folder>
+
 </Solution>

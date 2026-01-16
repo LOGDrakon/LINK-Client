@@ -10,28 +10,28 @@
     <PackageArchitecture>x64</PackageArchitecture>
     <PackageIdentityName>66f956b7-1fc0-4091-8381-f85b5430e49c</PackageIdentityName>
     <PackageIdentityPublisher>CN=MAINTENANCE</PackageIdentityPublisher>
-    <IntermediateOutputPath>C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\</IntermediateOutputPath>
     <RemoteDeploymentType>CopyToDevice</RemoteDeploymentType>
     <PackageRegistrationPath></PackageRegistrationPath>
     <RemoveNonLayoutFiles>false</RemoveNonLayoutFiles>
     <DeployOptionalPackages>false</DeployOptionalPackages>
     <WindowsSdkPath></WindowsSdkPath>
-    <LayoutDir>C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\AppX</LayoutDir>
+    <LayoutDir>C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\AppX</LayoutDir>
   </PropertyGroup>
   <ItemGroup>
-    <AppXManifest Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\AppxManifest.xml">
+    <AppXManifest Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\LINK.Example.WinUI.Discovery.runtimeconfig.json">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\LINK.Example.WinUI.Discovery.runtimeconfig.json">
       <PackagePath>LINK.Example.WinUI.Discovery.runtimeconfig.json</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\apphost.exe">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\apphost.exe">
       <PackagePath>LINK.Example.WinUI.Discovery.exe</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\LINK.Example.WinUI.Discovery.dll">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\LINK.Example.WinUI.Discovery.dll">
       <PackagePath>LINK.Example.WinUI.Discovery.dll</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\MAINTENANCE\.nuget\packages\microsoft.netcore.app.runtime.win-x64\8.0.22\runtimes\win-x64\lib\net8.0\Microsoft.CSharp.dll">
@@ -700,46 +700,46 @@
     <AppxPackagedFile Include="C:\Users\MAINTENANCE\.nuget\packages\microsoft.web.webview2\1.0.3179.45\runtimes\win-x64\native_uap\Microsoft.Web.WebView2.Core.dll">
       <PackagePath>Microsoft.Web.WebView2.Core.dll</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Client\bin\Debug\net8.0\LINK.Client.dll">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\src\LINK.Client\bin\Debug\net8.0\LINK.Client.dll">
       <PackagePath>LINK.Client.dll</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Core\bin\Debug\net8.0\LINK.Core.dll">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\src\LINK.Core\bin\Debug\net8.0\LINK.Core.dll">
       <PackagePath>LINK.Core.dll</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Transport.Serial\bin\Debug\net8.0\LINK.Transport.Serial.dll">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\src\LINK.Transport.Serial\bin\Debug\net8.0\LINK.Transport.Serial.dll">
       <PackagePath>LINK.Transport.Serial.dll</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\MAINTENANCE\.nuget\packages\microsoft.web.webview2\1.0.3179.45\lib_manual\net8.0-windows10.0.17763.0\Microsoft.Web.WebView2.Core.Projection.dll">
       <PackagePath>Microsoft.Web.WebView2.Core.Projection.dll</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\LINK.Example.WinUI.Discovery.deps.json">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\LINK.Example.WinUI.Discovery.deps.json">
       <PackagePath>LINK.Example.WinUI.Discovery.deps.json</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\Assets\LockScreenLogo.scale-200.png">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\Assets\SplashScreen.scale-200.png">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\Assets\SplashScreen.scale-200.png">
       <PackagePath>Assets\SplashScreen.scale-200.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\Assets\Square150x150Logo.scale-200.png">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\Assets\Square150x150Logo.scale-200.png">
       <PackagePath>Assets\Square150x150Logo.scale-200.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\Assets\Square44x44Logo.scale-200.png">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\Assets\Square44x44Logo.scale-200.png">
       <PackagePath>Assets\Square44x44Logo.scale-200.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
       <PackagePath>Assets\Square44x44Logo.targetsize-24_altform-unplated.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\Assets\StoreLogo.png">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\Assets\StoreLogo.png">
       <PackagePath>Assets\StoreLogo.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\Assets\Wide310x150Logo.scale-200.png">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\Assets\Wide310x150Logo.scale-200.png">
       <PackagePath>Assets\Wide310x150Logo.scale-200.png</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\MAINTENANCE\.nuget\packages\microsoft.web.webview2\1.0.3179.45\build\..\lib\Microsoft.Web.WebView2.Core.winmd">
       <PackagePath>Microsoft.Web.WebView2.Core.winmd</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\LINK.Example.WinUI.Discovery\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\resources.pri">
+    <AppxPackagedFile Include="C:\Users\MAINTENANCE\source\repos\LINK-Client\examples\LINK.Example.WinUI.Discovery\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\resources.pri">
       <PackagePath>resources.pri</PackagePath>
     </AppxPackagedFile>
   </ItemGroup>
