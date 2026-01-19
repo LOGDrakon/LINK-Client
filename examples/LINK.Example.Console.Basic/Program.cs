@@ -18,11 +18,14 @@ var client = new LinkClient(new LinkClientOptions
 
 await client.ConnectAsync();
 
-Console.WriteLine("Connected");
+var dragon = client.WithAppId("DRAGON");
 
-var info = await client.GetDeviceInfoAsync("DRAGON");
-
-Console.WriteLine($"Model: {info.Model}");
+var info = await dragon.GetDeviceInfoAsync();
 Console.WriteLine($"Version: {info.Version}");
 
-await client.DisposeAsync();
+await dragon.AuthenticateAsync("password");
+
+var frame = await dragon.SendAsync("GETTEMP");
+Console.WriteLine(frame.ToString());
+
+var task = client.SendCommandAsync(appId: "APP", command: "GETV", ct: CancellationToken.None);

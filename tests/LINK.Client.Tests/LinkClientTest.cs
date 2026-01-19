@@ -17,9 +17,9 @@ public class LinkClientTests
             CommandTimeout = TimeSpan.FromSeconds(1)
         });
 
-        await client.ConnectAsync();
+        await client.ConnectAsync(TestContext.Current.CancellationToken);
 
-        var task = client.SendCommandAsync("APP", "GETV");
+        var task = client.SendCommandAsync("APP", "GETV", TestContext.Current.CancellationToken);
 
         transport.SimulateReceive(
             new LinkFrame("APP", "RETURN", "GETV", "LINKv1.0"));
@@ -41,10 +41,10 @@ public class LinkClientTests
             CommandTimeout = TimeSpan.FromMilliseconds(100)
         });
 
-        await client.ConnectAsync();
+        await client.ConnectAsync(TestContext.Current.CancellationToken);
 
         await Assert.ThrowsAsync<TimeoutException>(() =>
-            client.SendCommandAsync("APP", "GETV"));
+            client.SendCommandAsync("APP", "GETV", TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -57,9 +57,9 @@ public class LinkClientTests
             CommandTimeout = TimeSpan.FromMilliseconds(200)
         });
 
-        await client.ConnectAsync();
+        await client.ConnectAsync(TestContext.Current.CancellationToken);
 
-        var task = client.SendCommandAsync("APP", "CMD1");
+        var task = client.SendCommandAsync("APP", "CMD1", TestContext.Current.CancellationToken);
 
         transport.SimulateReceive(
             new LinkFrame("APP", "RETURN", "CMD2", "OK"));

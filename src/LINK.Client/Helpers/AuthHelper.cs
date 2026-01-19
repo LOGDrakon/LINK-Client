@@ -1,4 +1,5 @@
 ﻿using Link.Client.Models;
+using Link.Core.Commands;
 
 namespace Link.Client.Helpers;
 
@@ -11,14 +12,18 @@ public sealed class AuthHelper
         _client = client;
     }
 
-    public async Task<LinkSecurityState> ExecuteAsync(string appId, string password)
+    public async Task<LinkSecurityState> ExecuteAsync(string appId, string password, CancellationToken ct = default)
     {
-        if (string.IsNullOrEmpty(password))
+        if (string.IsNullOrWhiteSpace(appId))
+            throw new ArgumentException(nameof(appId));
+
+        if (string.IsNullOrWhiteSpace(password))
             throw new ArgumentException(nameof(password));
 
-        var frame = await _client.SendCommandAsync(appId, "AUTH", password);
+        var frame = await _client.SendCommandAsync(appId, LinkCommand.Auth, ct, password)
+            .ConfigureAwait(false);
 
-        if (!frame.IsReturn || frame.ReturnedCommand != "AUTH")
+        if (!frame.IsReturn || frame.ReturnedCommand != LinkCommand.Auth)
             throw new InvalidOperationException("Invalid AUTH response");
 
         var result = frame.ReturnArguments.FirstOrDefault();

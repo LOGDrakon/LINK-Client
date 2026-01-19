@@ -20,6 +20,7 @@ internal sealed class FakeTransport : ILinkTransport
 
     public Task SendAsync(LinkFrame frame, CancellationToken _ = default)
     {
+        FrameReceived?.Invoke(frame);
         return Task.CompletedTask;
     }
 

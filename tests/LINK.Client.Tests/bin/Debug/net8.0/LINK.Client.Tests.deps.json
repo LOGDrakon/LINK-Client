@@ -9,7 +9,6 @@
       "LINK.Client.Tests/1.0.0": {
         "dependencies": {
           "LINK.Client": "1.0.0",
-          "LINK.Core": "1.0.0",
           "Microsoft.NET.Test.Sdk": "18.0.1",
           "xunit.v3": "3.2.1"
         },
@@ -627,6 +626,14 @@
           }
         }
       },
+      "System.CodeDom/10.0.1": {
+        "runtime": {
+          "lib/net8.0/System.CodeDom.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.125.57005"
+          }
+        }
+      },
       "System.IO.Ports/10.0.1": {
         "dependencies": {
           "runtime.native.System.IO.Ports": "10.0.1"
@@ -645,6 +652,25 @@
             "fileVersion": "10.0.125.57005"
           },
           "runtimes/win/lib/net8.0/System.IO.Ports.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "10.0.0.1",
+            "fileVersion": "10.0.125.57005"
+          }
+        }
+      },
+      "System.Management/10.0.1": {
+        "dependencies": {
+          "System.CodeDom": "10.0.1"
+        },
+        "runtime": {
+          "lib/net8.0/System.Management.dll": {
+            "assemblyVersion": "10.0.0.1",
+            "fileVersion": "10.0.125.57005"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net8.0/System.Management.dll": {
             "rid": "win",
             "assetType": "runtime",
             "assemblyVersion": "10.0.0.1",
@@ -735,7 +761,8 @@
       "LINK.Client/1.0.0": {
         "dependencies": {
           "LINK.Core": "1.0.0",
-          "LINK.Transport.Serial": "1.0.0"
+          "LINK.Transport.Serial": "1.0.0",
+          "System.Management": "10.0.1"
         },
         "runtime": {
           "LINK.Client.dll": {
@@ -968,12 +995,26 @@
       "path": "runtime.osx-x64.runtime.native.system.io.ports/10.0.1",
       "hashPath": "runtime.osx-x64.runtime.native.system.io.ports.10.0.1.nupkg.sha512"
     },
+    "System.CodeDom/10.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-owy+NlWSBRNLZO8CZ7IguuaPHHiAivjstTciM7YlXyDDqBY26FMl3F9Nw04n8Dog1JaxFlZiEIEXKPaigRmkNg==",
+      "path": "system.codedom/10.0.1",
+      "hashPath": "system.codedom.10.0.1.nupkg.sha512"
+    },
     "System.IO.Ports/10.0.1": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-2aDgBhEsZzlJBYqcI7bvEL6IsWq1KWGNdilscFIxW48QBoTQbxES0aVhB8YmvVZXwEVrcUQb4XNShBmsqg/l3Q==",
       "path": "system.io.ports/10.0.1",
       "hashPath": "system.io.ports.10.0.1.nupkg.sha512"
+    },
+    "System.Management/10.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/mywt9LtfYM+QbnIPPqdES/qWWU3tkorSDHPX99KYhCTtxdjGFmLcz7QwpAAeBKU0o+rZzEcpKZlrtEr1Xq39g==",
+      "path": "system.management/10.0.1",
+      "hashPath": "system.management.10.0.1.nupkg.sha512"
     },
     "xunit.v3/3.2.1": {
       "type": "package",

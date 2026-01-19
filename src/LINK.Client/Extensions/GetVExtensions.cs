@@ -7,9 +7,10 @@ public static class GetVExtensions
 {
     public static Task<LinkDeviceInfo> GetDeviceInfoAsync(
         this LinkClient client,
-        string appId)
+        string appId,
+        CancellationToken ct = default)
     {
         var helper = new GetVHelper(client);
-        return helper.ExecuteAsync(appId);
+        return helper.ExecuteAsync(appId, ct);
     }
 }

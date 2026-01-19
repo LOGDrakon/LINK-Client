@@ -1855,18 +1855,6 @@
       "xunit.analyzers/1.26.0": {
         "type": "package"
       },
-      "xunit.runner.visualstudio/3.1.5": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/_._": {}
-        },
-        "runtime": {
-          "lib/net8.0/_._": {}
-        },
-        "build": {
-          "build/net8.0/xunit.runner.visualstudio.props": {}
-        }
-      },
       "xunit.v3/3.2.1": {
         "type": "package",
         "dependencies": {
@@ -3634,27 +3622,6 @@
         "xunit.analyzers.nuspec"
       ]
     },
-    "xunit.runner.visualstudio/3.1.5": {
-      "sha512": "tKi7dSTwP4m5m9eXPM2Ime4Kn7xNf4x4zT9sdLO/G4hZVnQCRiMTWoSZqI/pYTVeI27oPPqHBKYI/DjJ9GsYgA==",
-      "type": "package",
-      "path": "xunit.runner.visualstudio/3.1.5",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "_content/README.md",
-        "_content/logo-128-transparent.png",
-        "build/net472/xunit.abstractions.dll",
-        "build/net472/xunit.runner.visualstudio.props",
-        "build/net472/xunit.runner.visualstudio.testadapter.dll",
-        "build/net8.0/xunit.abstractions.dll",
-        "build/net8.0/xunit.runner.visualstudio.props",
-        "build/net8.0/xunit.runner.visualstudio.testadapter.dll",
-        "lib/net472/_._",
-        "lib/net8.0/_._",
-        "xunit.runner.visualstudio.3.1.5.nupkg.sha512",
-        "xunit.runner.visualstudio.nuspec"
-      ]
-    },
     "xunit.v3/3.2.1": {
       "sha512": "oefMPnMEQv9JXlc1mmj4XnNmylLWJA6XHncTcyM3LBvbepO+rsWfmIZ2gb2tO6WU29De4RxvEFHT5xxmsrjn8Q==",
       "type": "package",
@@ -3810,7 +3777,6 @@
     "net8.0": [
       "LINK.Client >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 18.0.1",
-      "xunit.runner.visualstudio >= 3.1.5",
       "xunit.v3 >= 3.2.1"
     ]
   },
@@ -3871,10 +3837,6 @@
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",
             "version": "[18.0.1, )"
-          },
-          "xunit.runner.visualstudio": {
-            "target": "Package",
-            "version": "[3.1.5, )"
           },
           "xunit.v3": {
             "target": "Package",

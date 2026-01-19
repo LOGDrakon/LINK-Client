@@ -13,11 +13,15 @@ public sealed class LinkSerialTransport : ILinkTransport
     private readonly Encoding _encoding = Encoding.ASCII;
 
     public event Action<LinkFrame>? FrameReceived;
+    public event Action<Exception>? TransportError;
 
     public bool IsOpen => _port.IsOpen;
 
     public LinkSerialTransport(LinkSerialOptions options)
     {
+        if (string.IsNullOrWhiteSpace(options.PortName))
+            throw new ArgumentException(nameof(options.PortName));
+
         _port = new SerialPort(
             options.PortName,
             options.BaudRate,
@@ -32,12 +36,15 @@ public sealed class LinkSerialTransport : ILinkTransport
 
     public Task OpenAsync(CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         _port.Open();
         return Task.CompletedTask;
     }
 
     public Task CloseAsync(CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         if (_port.IsOpen)
             _port.Close();
 
@@ -46,6 +53,8 @@ public sealed class LinkSerialTransport : ILinkTransport
 
     public Task SendAsync(LinkFrame frame, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         if (!_port.IsOpen)
             throw new InvalidOperationException("Serial port not open");
 
@@ -61,15 +70,15 @@ public sealed class LinkSerialTransport : ILinkTransport
             var text = _port.ReadExisting();
             _parser.Feed(text);
         }
-        catch
+        catch (Exception ex)
         {
-            // transport ne doit jamais throw
+            TransportError?.Invoke(ex);
         }
     }
 
     public async ValueTask DisposeAsync()
     {
-        await CloseAsync();
+        await CloseAsync().ConfigureAwait(false);
         _port.Dispose();
     }
 }
