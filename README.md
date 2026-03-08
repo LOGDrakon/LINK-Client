@@ -1,69 +1,74 @@
-# LINK as a project
+# LINK-Client SDK
 
-LINK is a custom protocol that allows a PC and a USB device to exchange data.
+SDK .NET pour communiquer avec des appareils compatibles **LINK** (USB/Serial), envoyer des commandes, récupérer les informations de l’appareil et gérer l’authentification/chiffrement au niveau client.
 
-## The purpose
+## À propos du protocole LINK
 
-LINK can be *modified* as needed — only a few commands are common between all applications.  
-With LINK, you separate your projects by "Application", so different LINK applications cannot communicate with each other (*as mentioned earlier, LINK can be modified, so this behavior can be changed if you want*).  
-Each application is defined by an **APP-ID**.  
+Le protocole suit un format de trame texte terminé par `\0` :
 
-All commands follow this structure:  
-**LINK:[APP-ID]:[COMMAND]:[ARGS_0]:[ARGS_1]:[ARGS_n]\0**  
-Except for the **GETAPP** command, which is written as:  
-**LINK:GETAPP\0**
+- Trame standard : `LINK:[APP-ID]:[COMMAND]:[ARGS_0]:...:[ARGS_n]\0`
+- Trame de découverte d’application : `LINK:GETAPP\0`
 
-The main commands are:
-- **GETAPP**  
-    - Used to retrieve the APP-ID. It can be disabled if needed.
-- **GETV**  
-    - Used to retrieve general information about the device.  
-    - This command cannot be disabled, as it is required for software to detect LINK-compatible devices connected to the PC.
-- **UPDATE**
-    - Used to trigger the update function of the device.
-    - This command cannot be disabled.
-- **RETURN**  
-    - Used to respond to a command. The first argument (<ARGS_0>) specifies which command it is responding to.  
-    - This command cannot be disabled.
+Commandes standard côté protocole :
 
-After this, you can add your own custom commands.
+- `GETAPP` : récupère l’identifiant applicatif (`APP-ID`).
+- `GETV` : récupère la version/informations du device.
+- `RETURN` : réponse d’un appareil à une commande.
+- `AUTH` : authentification optionnelle selon le firmware.
 
-### Note for the format number for version
-The version number follow this archirecture : `vX.Y.Z`
-- X : is the LINK protocol compatibility, if this number change, then it means that the protocol has been changed.
-- Y : is the app compatibility, if this number change, you would need to adapt your code (Client side or Device side).
-- Z : is the patch changes, if this number change you would'nt need to change your code, is purpose is to pacth some bugs.
+## Contenu du repository
 
-# LINK-Client
+- `src/LINK.Core` : structures de trames, parsing, contrats de transport.
+- `src/LINK.Transport.Serial` : implémentation `SerialPort`.
+- `src/LINK.Client` : API haut niveau (send/receive, extensions, découverte).
+- `examples/` : exemples console, WPF, WinUI.
+- `tests/` : tests unitaires.
 
-## Presentation
+## Démarrage rapide
 
-**LINK-Client** is a part of the LINK project.  
-Its purpose is to provide a low-level communication layer, making it easier to create your own LINK-based software.  
-LINK client versioning is provided through this format : `C-LINK_vX.Y.Z`
+### 1) Créer un transport série
+
+```csharp
+using Link.Transport.Serial;
+
+var transport = new LinkSerialTransport(new LinkSerialOptions
+{
+    PortName = "COM3",
+    BaudRate = 115200
+});
+```
+
+### 2) Créer et connecter le client
+
+```csharp
+using Link.Client;
+
+var client = new LinkClient(new LinkClientOptions
+{
+    Transport = transport,
+    CommandTimeout = TimeSpan.FromSeconds(2)
+});
+
+await client.ConnectAsync();
+```
+
+### 3) Travailler avec un `APP-ID`
+
+```csharp
+using Link.Client.Extensions;
+
+var dragon = client.WithAppId("DRAGON");
+var info = await dragon.GetDeviceInfoAsync();
+var frame = await dragon.SendAsync("GETTEMP");
+```
 
 ## Documentation
-All of the documentation for the project can be found at [`.\docs\LINK_Architecture.md`](.\docs\LINK_Architecture.md)
 
-# LEGALS
+- Guide SDK complet (fonctions, modèles, découverte, sécurité, snippets) :
+  - [`docs/LINK_SDK_Documentation.md`](docs/LINK_SDK_Documentation.md)
+- Vue d’architecture globale LINK :
+  - [`docs/LINK_Architecture.md`](docs/LINK_Architecture.md)
 
-## License
+## Licence
 
-This project is licensed under the [Apache License 2.0](./LICENSE).  
-You may obtain a copy of the license at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0),  
-or see the [LICENSE](./LICENSE) file for more details.
-
-### Permissions
-- Commercial use ✅  
-- Modification ✅  
-- Distribution ✅  
-- Private use ✅  
-
-### Conditions
-- You must include the original copyright and license notice in any copies or substantial portions of the software.  
-- If you modify the code, you must include a notice stating that you changed it.  
-- No trademark use is granted.  
-
-### Limitations
-- The software is provided "as is", without warranty of any kind.  
-- Liability is disclaimed for any damages resulting from the use of the software.
+Projet sous licence Apache-2.0. Voir [`LICENSE`](LICENSE).
