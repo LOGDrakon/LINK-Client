@@ -1,0 +1,16 @@
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/bin/Debug/net8.0/LINK.Transport.Tcp.deps.json
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/bin/Debug/net8.0/LINK.Transport.Tcp.dll
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/bin/Debug/net8.0/LINK.Transport.Tcp.pdb
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/bin/Debug/net8.0/LINK.Core.dll
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/bin/Debug/net8.0/LINK.Core.pdb
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/obj/Debug/net8.0/LINK.Transport.Tcp.csproj.AssemblyReference.cache
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/obj/Debug/net8.0/LINK.Transport.Tcp.GeneratedMSBuildEditorConfig.editorconfig
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/obj/Debug/net8.0/LINK.Transport.Tcp.AssemblyInfoInputs.cache
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/obj/Debug/net8.0/LINK.Transport.Tcp.AssemblyInfo.cs
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/obj/Debug/net8.0/LINK.Transport.Tcp.csproj.CoreCompileInputs.cache
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/obj/Debug/net8.0/LINK.Transport.Tcp.sourcelink.json
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/obj/Debug/net8.0/LINK.Tra.370474DA.Up2Date
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/obj/Debug/net8.0/LINK.Transport.Tcp.dll
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/obj/Debug/net8.0/refint/LINK.Transport.Tcp.dll
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/obj/Debug/net8.0/LINK.Transport.Tcp.pdb
+/home/runner/work/LINK-Client/LINK-Client/src/LINK.Transport.Tcp/obj/Debug/net8.0/ref/LINK.Transport.Tcp.dll

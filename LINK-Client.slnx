@@ -8,6 +8,7 @@
     <Project Path="src/LINK.Client/LINK.Client.csproj" />
     <Project Path="src/LINK.Core/LINK.Core.csproj" />
     <Project Path="src/LINK.Transport.Serial/LINK.Transport.Serial.csproj" />
+    <Project Path="src/LINK.Transport.Tcp/LINK.Transport.Tcp.csproj" />
   </Folder>
 
   <Folder Name="/examples/">
@@ -28,12 +29,17 @@
       <Project Path="examples/LINK.Example.WPF.Discovery/LINK.Example.WPF.Discovery.csproj" />
     </Folder>
 
+    <Folder Name="/examples/LINK.Example.Console.Tcp/">
+      <Project Path="examples/LINK.Example.Console.Tcp/LINK.Example.Console.Tcp.csproj" />
+    </Folder>
+
     <Folder Name="/examples/LINK.Example.WinUI.Discovery/">
       <Project Path="examples/LINK.Example.WinUI.Discovery/LINK.Example.WinUI.Discovery.csproj">
         <Platform Project="x64" />
         <Deploy />
       </Project>
     </Folder>
+    <Project Path="examples/LINK.Example.Console.Tcp/LINK.Example.Console.Tcp.csproj" />
     <Project Path="examples/LINK.Example.Console.Basic/LINK.Example.Console.Basic.csproj" />
     <Project Path="examples/LINK.Example.Console.Discovery/LINK.Example.Console.Discovery.csproj" />
     <Project Path="examples/LINK.Example.Console.Security/LINK.Example.Console.Security.csproj" />
@@ -48,6 +54,7 @@
   <Folder Name="/tests/">
     <Project Path="tests/LINK.Client.Tests/LINK.Client.Tests.csproj" />
     <Project Path="tests/LINK.Core.Tests/LINK.Core.Tests.csproj" />
+    <Project Path="tests/LINK.Transport.Tcp.Tests/LINK.Transport.Tcp.Tests.csproj" />
   </Folder>
 
   <Folder Name="/Éléments de solution/">

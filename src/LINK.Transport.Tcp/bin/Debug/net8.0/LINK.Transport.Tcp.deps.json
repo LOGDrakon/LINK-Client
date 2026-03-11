@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "LINK.Transport.Tcp/1.0.0": {
+        "dependencies": {
+          "LINK.Core": "1.0.0"
+        },
+        "runtime": {
+          "LINK.Transport.Tcp.dll": {}
+        }
+      },
+      "LINK.Core/1.0.0": {
+        "runtime": {
+          "LINK.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "LINK.Transport.Tcp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LINK.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\LINK.Client\LINK.Client.csproj" />
+    <ProjectReference Include="..\..\src\LINK.Core\LINK.Core.csproj" />
+    <ProjectReference Include="..\..\src\LINK.Transport.Tcp\LINK.Transport.Tcp.csproj" />
   </ItemGroup>
 
 </Project>
