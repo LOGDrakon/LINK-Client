@@ -1,32 +1,33 @@
 # LINK-Client SDK
 
-SDK .NET pour communiquer avec des appareils compatibles **LINK** (USB/Serial), envoyer des commandes, récupérer les informations de l’appareil et gérer l’authentification/chiffrement au niveau client.
+SDK .NET pour communiquer avec des appareils compatibles **LINK** (USB/Serial), envoyer des commandes, récupérer les informations de l'appareil et gérer l'authentification/chiffrement au niveau client.
 
 ## À propos du protocole LINK
 
 Le protocole suit un format de trame texte terminé par `\0` :
 
 - Trame standard : `LINK:[APP-ID]:[COMMAND]:[ARGS_0]:...:[ARGS_n]\0`
-- Trame de découverte d’application : `LINK:GETAPP\0`
+- Trame de découverte d'application : `LINK:GETAPP\0`
 
 Commandes standard côté protocole :
 
-- `GETAPP` : récupère l’identifiant applicatif (`APP-ID`).
+- `GETAPP` : récupère l'identifiant applicatif (`APP-ID`).
 - `GETV` : récupère la version/informations du device.
-- `RETURN` : réponse d’un appareil à une commande.
+- `RETURN` : réponse d'un appareil à une commande.
 - `AUTH` : authentification optionnelle selon le firmware.
 
 ## Contenu du repository
 
 - `src/LINK.Core` : structures de trames, parsing, contrats de transport.
 - `src/LINK.Transport.Serial` : implémentation `SerialPort`.
+- `src/LINK.Transport.Tcp` : implémentation TCP client (simulateur, tests locaux).
 - `src/LINK.Client` : API haut niveau (send/receive, extensions, découverte).
 - `examples/` : exemples console, WPF, WinUI.
 - `tests/` : tests unitaires.
 
 ## Démarrage rapide
 
-### 1) Créer un transport série
+### 1a) Transport série (appareil réel ou COM virtuel)
 
 ```csharp
 using Link.Transport.Serial;
@@ -35,6 +36,21 @@ var transport = new LinkSerialTransport(new LinkSerialOptions
 {
     PortName = "COM3",
     BaudRate = 115200
+});
+```
+
+### 1b) Transport TCP (simulateur Python ou appareil réseau)
+
+Le transport TCP est utile pour tester sans appareil physique et sans pont
+COM virtuel — notamment avec le simulateur Python inclus dans le repository.
+
+```csharp
+using Link.Transport.Tcp;
+
+var transport = new LinkTcpTransport(new LinkTcpOptions
+{
+    Host = "127.0.0.1",
+    Port = 5000
 });
 ```
 
@@ -62,11 +78,43 @@ var info = await dragon.GetDeviceInfoAsync();
 var frame = await dragon.SendAsync("GETTEMP");
 ```
 
+## Simulateur Python TCP
+
+Pour tester localement sans appareil matériel ni port COM virtuel, lancez le
+simulateur inclus dans `examples/LINK.Device.Simulator/` :
+
+```bash
+python examples/LINK.Device.Simulator/link_tcp_simulator.py
+# démarre sur 127.0.0.1:5000 par défaut
+
+# options :
+python examples/LINK.Device.Simulator/link_tcp_simulator.py \
+    --host 0.0.0.0 --port 5000 \
+    --app-id DRAGON --password password --temp 24.6
+```
+
+Puis lancez l'exemple TCP dédié :
+
+```bash
+dotnet run --project examples/LINK.Example.Console.Tcp
+```
+
+Ou l'exemple de base en mode TCP :
+
+```bash
+dotnet run --project examples/LINK.Example.Console.Basic -- --tcp
+dotnet run --project examples/LINK.Example.Console.Basic -- --tcp 192.168.1.10 9000
+```
+
+> **Pourquoi TCP ?**  Les ports COM virtuels Windows (com0com, etc.) sont souvent
+> fragiles et dépendants du matériel.  Le transport TCP fonctionne partout
+> (Windows, Linux, macOS) et ne nécessite aucun driver supplémentaire.
+
 ## Documentation
 
 - Guide SDK complet (fonctions, modèles, découverte, sécurité, snippets) :
   - [`docs/LINK_SDK_Documentation.md`](docs/LINK_SDK_Documentation.md)
-- Vue d’architecture globale LINK :
+- Vue d'architecture globale LINK :
   - [`docs/LINK_Architecture.md`](docs/LINK_Architecture.md)
 
 ## Licence

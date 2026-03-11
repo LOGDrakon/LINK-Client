@@ -72,6 +72,45 @@ var client = new LinkClient(new LinkClientOptions
 await client.ConnectAsync();
 ```
 
+## 3.1b Transport TCP (simulateur / test local)
+
+Le transport TCP permet de connecter `LinkClient` à un endpoint réseau au lieu
+d'un port COM.  C'est la solution recommandée quand les ports COM virtuels
+(com0com, etc.) sont instables ou indisponibles.
+
+```csharp
+using Link.Client;
+using Link.Transport.Tcp;
+
+var transport = new LinkTcpTransport(new LinkTcpOptions
+{
+    Host = "127.0.0.1",  // adresse du simulateur ou de l'appareil
+    Port = 5000,
+    ConnectTimeout = TimeSpan.FromSeconds(5)
+});
+
+var client = new LinkClient(new LinkClientOptions
+{
+    Transport = transport,
+    CommandTimeout = TimeSpan.FromSeconds(2)
+});
+
+await client.ConnectAsync();
+```
+
+**Simulateur Python TCP inclus :**
+
+```bash
+# Lancer le simulateur (aucune dépendance externe nécessaire)
+python examples/LINK.Device.Simulator/link_tcp_simulator.py --app-id DRAGON --password password
+
+# Puis lancer l'exemple dédié
+dotnet run --project examples/LINK.Example.Console.Tcp
+```
+
+> Le simulateur parle exactement le même protocole LINK que le vrai firmware
+> (trames ASCII, terminateur `\0`, réponses `RETURN`).
+
 ## 3.2 Envoyer une commande brute
 
 ```csharp
@@ -235,6 +274,7 @@ finally
 
 - `LinkClientOptions` : configuration du client (`Transport`, `CommandTimeout`).
 - `LinkSerialOptions` : configuration port COM (`PortName`, `BaudRate`, etc.).
+- `LinkTcpOptions` : configuration TCP (`Host`, `Port`, `ConnectTimeout`).
 - `LinkDeviceClient` : wrapper orienté `APP-ID` (`SendAsync`, `GetDeviceInfoAsync`, `AuthenticateAsync`).
 - `LinkDeviceInfo` : infos issues de `GETV`.
 - `LinkSecurityState` : état d’authentification/verrouillage.
