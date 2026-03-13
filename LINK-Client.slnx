@@ -39,15 +39,6 @@
         <Deploy />
       </Project>
     </Folder>
-    <Project Path="examples/LINK.Example.Console.Tcp/LINK.Example.Console.Tcp.csproj" />
-    <Project Path="examples/LINK.Example.Console.Basic/LINK.Example.Console.Basic.csproj" />
-    <Project Path="examples/LINK.Example.Console.Discovery/LINK.Example.Console.Discovery.csproj" />
-    <Project Path="examples/LINK.Example.Console.Security/LINK.Example.Console.Security.csproj" />
-    <Project Path="examples/LINK.Example.WinUI.Discovery/LINK.Example.WinUI.Discovery.csproj">
-      <Platform Project="x64" />
-      <Deploy />
-    </Project>
-    <Project Path="examples/LINK.Example.WPF.Discovery/LINK.Example.WPF.Discovery.csproj" />
 
   </Folder>
 
