@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace Link.Client.Helpers;
 
-namespace LINK.Client.Helpers
+// TODO: Implement firmware update helper.
+internal class UpdateHelper
 {
-    internal class UpdateHelper
-    {
-    }
 }
