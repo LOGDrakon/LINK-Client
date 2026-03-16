@@ -48,6 +48,11 @@ public sealed class OsPortWatcher : IDisposable
         _knownPorts = SerialPort.GetPortNames().ToHashSet();
         _arrivalWatcher.Start();
         _removalWatcher.Start();
+
+        // Signal ports that are already present so that discovery scans
+        // them immediately (not only when a PnP event fires later).
+        foreach (var port in _knownPorts)
+            PortAdded?.Invoke(port);
     }
 
     public void Dispose()

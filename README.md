@@ -110,6 +110,18 @@ dotnet run --project examples/LINK.Example.Console.Basic -- --tcp 192.168.1.10 9
 > fragiles et dépendants du matériel.  Le transport TCP fonctionne partout
 > (Windows, Linux, macOS) et ne nécessite aucun driver supplémentaire.
 
+## Générer les projets d'exemple
+
+Build avec :
+```bash
+dotnet build <path to the .csproj exemple file>
+```
+
+Lancer avec :
+```bash
+dotnet run --project <path to the .csproj exemple file>
+```
+
 ## Documentation
 
 - Guide SDK complet (fonctions, modèles, découverte, sécurité, snippets) :
