@@ -16,7 +16,7 @@ The simulator connects to one end of the pair; point the .NET
 
 Supported frames (sent by the client):
   LINK:GETAPP\0
-  LINK:<APP-ID>:GETV\0   (also accepts LINK:AUTO:GETV\0)
+  LINK:<APP-ID>:GETV\0
   LINK:<APP-ID>:AUTH:<password>\0
   LINK:<APP-ID>:GETTEMP\0
   LINK:<APP-ID>:PING\0
@@ -152,14 +152,14 @@ class SerialHandler:
             self.send(build_frame(state.app_id, "RETURN", "GETAPP", state.app_id))
             return
 
+        # For all commands (except GETAPP), only respond if the app-id matches
+        if app_id != state.app_id:
+            self.log(f"Ignored command for unknown app_id={app_id!r}")
+            return
+
         if command == "GETV":
             self.send(build_frame(state.app_id, "RETURN", "GETV",
                                   *state.getv_args()))
-            return
-
-        # For all other commands, only respond if the app-id matches
-        if app_id not in ("AUTO", state.app_id):
-            self.log(f"Ignored command for unknown app_id={app_id!r}")
             return
 
         if command == "AUTH":

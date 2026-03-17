@@ -8,10 +8,11 @@ public static class DiscoveryExtensions
 {
     public static Task<IReadOnlyList<LinkDetectedDevice>> ScanForLinkDevicesAsync(
         Func<string, ILinkTransport> transportFactory,
+        string appId,
         TimeSpan? timeout = null,
         CancellationToken cancellationToken = default)
     {
         var helper = new LinkDiscoveryHelper(transportFactory, timeout);
-        return helper.ScanAsync(null, cancellationToken);
+        return helper.ScanAsync(appId, cancellationToken);
     }
 }

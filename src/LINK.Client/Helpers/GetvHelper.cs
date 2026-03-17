@@ -20,6 +20,6 @@ public sealed class GetVHelper
         if (!frame.IsReturn || frame.ReturnedCommand != LinkCommand.GetVersion)
             throw new InvalidOperationException("Invalid GETV response");
 
-        return LinkDeviceInfo.Parse(appId, frame.ReturnArguments);
+        return LinkDeviceInfo.Parse(frame.AppId ?? appId, frame.ReturnArguments);
     }
 }

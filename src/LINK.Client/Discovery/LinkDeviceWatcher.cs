@@ -7,7 +7,7 @@ public sealed class LinkDeviceWatcher : IAsyncDisposable
 {
     private readonly OsPortWatcher _osWatcher;
     private readonly LinkDiscoveryHelper _discovery;
-    private readonly string? _appIdFilter;
+    private readonly string _appIdFilter;
 
     public LinkDeviceCollection Devices { get; } = new();
 
@@ -17,7 +17,7 @@ public sealed class LinkDeviceWatcher : IAsyncDisposable
     public LinkDeviceWatcher(
         Func<string, ILinkTransport> transportFactory,
         TimeSpan timeout,
-        string? appIdFilter = null)
+        string appIdFilter)
     {
         _appIdFilter = appIdFilter;
 
@@ -32,9 +32,7 @@ public sealed class LinkDeviceWatcher : IAsyncDisposable
 
     private async Task TryAddDeviceAsync(string port)
     {
-        var devices = await _discovery.ScanAsync(_appIdFilter);
-
-        var device = devices.FirstOrDefault(d => d.PortName == port);
+        var device = await _discovery.TryDetectAsync(port, _appIdFilter);
         if (device == null)
             return;
 

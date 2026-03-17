@@ -18,13 +18,13 @@ public sealed class LinkDiscoveryHelper
     }
 
     public async Task<IReadOnlyList<LinkDetectedDevice>> ScanAsync(
-        string? appIdFilter = null,
+        string appId,
         CancellationToken cancellationToken = default)
     {
         var ports = Discovery.LinkPortScanner.GetAvailablePorts();
 
         var tasks = ports.Select(port =>
-            TryDetectAsync(port, appIdFilter, cancellationToken));
+            TryDetectAsync(port, appId, cancellationToken));
 
         var results = await Task.WhenAll(tasks);
 
@@ -34,10 +34,10 @@ public sealed class LinkDiscoveryHelper
             .ToArray();
     }
 
-    private async Task<LinkDetectedDevice?> TryDetectAsync(
+    public async Task<LinkDetectedDevice?> TryDetectAsync(
         string port,
-        string? appIdFilter,
-        CancellationToken ct)
+        string appId,
+        CancellationToken ct = default)
     {
         try
         {
@@ -51,10 +51,9 @@ public sealed class LinkDiscoveryHelper
 
             await client.ConnectAsync(ct);
 
-            var info = await client.GetDeviceInfoAsync("AUTO");
+            var info = await client.GetDeviceInfoAsync(appId);
 
-            if (appIdFilter != null &&
-                !string.Equals(info.AppId, appIdFilter, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(info.AppId, appId, StringComparison.OrdinalIgnoreCase))
                 return null;
 
             return new LinkDetectedDevice

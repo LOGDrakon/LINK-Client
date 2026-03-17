@@ -8,7 +8,7 @@ a physical device or a virtual COM-port bridge.
 
 Supported frames (sent by the client):
   LINK:GETAPP\0
-  LINK:<APP-ID>:GETV\0   (also accepts LINK:AUTO:GETV\0)
+  LINK:<APP-ID>:GETV\0
   LINK:<APP-ID>:AUTH:<password>\0
   LINK:<APP-ID>:GETTEMP\0
   LINK:<APP-ID>:PING\0
@@ -64,7 +64,7 @@ def build_frame(app_id, command, *args) -> bytes:
         parts.append(app_id)
     parts.append(command)
     parts.extend(args)
-    return (":".join(parts) + "\0").encode("ascii", errors="strict")
+    return (":".join(parts) + "\0").encode("latin-1")
 
 
 def parse_frame(raw: str) -> dict:
@@ -130,14 +130,13 @@ class ClientHandler:
             self.send(build_frame(state.app_id, "RETURN", "GETAPP", state.app_id))
             return
 
-        if command == "GETV":
-            # Accept both the real app-id and the discovery alias "AUTO"
-            self.send(build_frame(state.app_id, "RETURN", "GETV", *state.getv_args()))
+        # For all commands (except GETAPP), only respond if the app-id matches
+        if app_id != state.app_id:
+            self.log(f"Ignored command for unknown app_id={app_id!r}")
             return
 
-        # For all other commands, only respond if the app-id matches
-        if app_id not in ("AUTO", state.app_id):
-            self.log(f"Ignored command for unknown app_id={app_id!r}")
+        if command == "GETV":
+            self.send(build_frame(state.app_id, "RETURN", "GETV", *state.getv_args()))
             return
 
         if command == "AUTH":

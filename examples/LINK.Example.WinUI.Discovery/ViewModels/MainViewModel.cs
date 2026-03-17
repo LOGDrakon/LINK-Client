@@ -17,7 +17,7 @@ public sealed class MainViewModel
                 BaudRate = 115200
             }),
             timeout: TimeSpan.FromMilliseconds(800),
-            appIdFilter: null
+            appIdFilter: "DRAGON"
         );
 
         Watcher.Start();
