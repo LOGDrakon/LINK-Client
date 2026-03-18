@@ -4,7 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>LINK.Transport.Tcp</PackageId>
+    <Description>Transport TCP pour le SDK LINK. Permet la communication avec des appareils LINK via réseau TCP, idéal pour les simulateurs et tests.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LINK.Core\LINK.Core.csproj" />
