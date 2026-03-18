@@ -4,7 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>LINK.Client</PackageId>
+    <Description>Le package LINK est un ensemble qui permet de communiquer facilement et incorpore la découverte automatique et performante des devices LINK compatibles. Le code source et des exemples sont disponible à : https://github.com/LOGDrakon/LINK-Client</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Management" Version="10.0.1" />

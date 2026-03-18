@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <Authors>LOGDrakon</Authors>
+    <Company>LOGDrakon</Company>
+    <PackageProjectUrl>https://github.com/LOGDrakon/LINK-Client</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/LOGDrakon/LINK-Client</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageTags>LINK;SDK;serial;tcp;device;communication</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+</Project>

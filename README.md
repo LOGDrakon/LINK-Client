@@ -25,6 +25,26 @@ Commandes standard côté protocole :
 - `examples/` : exemples console, WPF, WinUI.
 - `tests/` : tests unitaires.
 
+## Installation via NuGet
+
+Installez les packages depuis [NuGet.org](https://www.nuget.org/) :
+
+```bash
+# Package principal (inclut Core + Transport Serial)
+dotnet add package LINK.Client
+
+# Ou installez les composants individuellement
+dotnet add package LINK.Core
+dotnet add package LINK.Transport.Serial
+dotnet add package LINK.Transport.Tcp
+```
+
+Ou via le Package Manager :
+
+```powershell
+Install-Package LINK.Client
+```
+
 ## Démarrage rapide
 
 ### 1a) Transport série (appareil réel ou COM virtuel)
