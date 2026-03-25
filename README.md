@@ -6,8 +6,8 @@ SDK .NET pour communiquer avec des appareils compatibles **LINK** (USB/Serial), 
 
 Le protocole suit un format de trame texte terminé par `\0` :
 
-- Trame standard : `LINK:[APP-ID]:[COMMAND]:[ARGS_0]:...:[ARGS_n]\0`
-- Trame de découverte d'application : `LINK:GETAPP\0`
+- Trame standard : `LINK\x1f[APP-ID]\x1f[COMMAND]\x1f[ARGS_0]\x1f...\x1f[ARGS_n]\0`
+- Trame de découverte d'application : `LINK\x1fGETAPP\0`
 
 Commandes standard côté protocole :
 
@@ -16,6 +16,7 @@ Commandes standard côté protocole :
 - `RETURN` : réponse d'un appareil à une commande.
 - `AUTH` : authentification par hash avec échange de nonces (challenge-response).
 - `AUTH_INIT` : échange de nonces aléatoires entre client et device (précède `AUTH`).
+- `CHPWD` : changement de mot de passe (`CHPWD\x1f<OLD_HASH>\x1f<NEW_HASH>\x1f<CRC32>`) — réponses : `OK`, `ERR\x1fBAD_OLD_PWD`, `ERR\x1fBAD_CRC`.
 
 ## Contenu du repository
 

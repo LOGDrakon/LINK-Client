@@ -25,6 +25,19 @@ if (info.IsLocked)
     var authResult = await client.AuthenticateAsync("DRAGON", "1234", info);
     Console.WriteLine($"Authenticated: {authResult.State.IsAuthenticated}");
     // authResult.Nonces can be reused for subsequent authentications
+
+    // Change the password (requires prior authentication)
+    if (authResult.State.IsAuthenticated)
+    {
+        var chpwd = await client.ChangePasswordAsync(
+            "DRAGON", "1234", "5678", info, authResult.Nonces);
+
+        if (chpwd.Success)
+            Console.WriteLine("Password changed successfully.");
+        else
+            Console.WriteLine($"Password change failed: {chpwd.Error}");
+            // chpwd.Error is "BAD_OLD_PWD" or "BAD_CRC"
+    }
 }
 
 var crypto = await client.NegotiateEncryptionAsync(

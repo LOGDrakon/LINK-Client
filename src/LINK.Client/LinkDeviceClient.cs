@@ -33,6 +33,17 @@ public sealed class LinkDeviceClient
         return helper.ExecuteAsync(AppId, password, deviceInfo, existingNonces, ct);
     }
 
+    public Task<LinkChangePasswordResult> ChangePasswordAsync(
+        string oldPassword,
+        string newPassword,
+        LinkDeviceInfo deviceInfo,
+        LinkAuthNonces nonces,
+        CancellationToken ct = default)
+    {
+        var helper = new ChangePasswordHelper(_client);
+        return helper.ExecuteAsync(AppId, oldPassword, newPassword, deviceInfo, nonces, ct);
+    }
+
     public Task DoneAsync(CancellationToken ct = default)
         => _client.DoneAsync(AppId, ct);
 

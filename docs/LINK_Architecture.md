@@ -9,7 +9,7 @@ The project aims to be **modular**, **extensible**, and **cross-platform**, allo
 
 All messages follow the same general structure:
 
-`LINK:[APP-ID]:[COMMAND]:[ARGS_0]:[ARGS...]:[ARGS_n]\0`  
+`LINK\x1f[APP-ID]\x1f[COMMAND]\x1f[ARGS_0]\x1f[ARGS...]\x1f[ARGS_n]\0`
 
 Each command belongs to a specific **Application**, identified by its `APP-ID`.  
 This allows different LINK applications to coexist without interference.
@@ -24,14 +24,14 @@ These commands are common to all LINK-based devices.
 Retrieves the `APP-ID` of the device.  
 
 **Format:**  
-`LINK:GETAPP\0`
+`LINK\x1fGETAPP\0`
 - May be disabled in some implementations (optional command).
 
 ### `GETV`
 Retrieves information about the device and the LINK version.
 
 **Format:**  
-`LINK:[APP-ID]:GETV\0`  
+`LINK\x1f[APP-ID]\x1fGETV\0`
 
 - Always enabled — it is used by PC software to detect LINK-compatible devices.  
 - Returns at least the **LINK version**.  
@@ -43,13 +43,13 @@ Retrieves information about the device and the LINK version.
   - May include security-related information (e.g., `LOCKED=true`, `ENC=AES128`, `HASH=SHA256`).
 
 **Example response:**  
-`LINK:DRAGON:RETURN:GETV:LINKv1.0:UID=0x12345678:MODEL=Dragon-Sensor:HASH=SHA256:LOCKED=true\0`
+`LINK\x1fDRAGON\x1fRETURN\x1fGETV\x1fLINKv1.0\x1fUID=0x12345678\x1fMODEL=Dragon-Sensor\x1fHASH=SHA256\x1fLOCKED=true\0`
 
 ### `RETURN`
 Used by the device to respond to a command.  
 
 **Format:**  
-`LINK:[APP-ID]:RETURN:[COMMAND]:[ARGS_0]:[ARGS...]:[ARGS_n]\0`  
+`LINK\x1f[APP-ID]\x1fRETURN\x1f[COMMAND]\x1f[ARGS_0]\x1f[ARGS...]\x1f[ARGS_n]\0`
 - `<COMMAND>` specifies which command is being answered.  
 - This command is mandatory.
 
@@ -59,8 +59,8 @@ Applications can define their own commands freely.
 They must always include the APP-ID and follow the same syntax.  
 
 **Example:**  
-Client : `LINK:DRAGON:GETTEMP\0`  
-Device : `LINK:DRAGON:RETURN:GETTEMP:24.6°C\0`  
+Client : `LINK\x1fDRAGON\x1fGETTEMP\0`  
+Device : `LINK\x1fDRAGON\x1fRETURN\x1fGETTEMP\x1f24.6°C\0`
 
 ---
 
@@ -83,7 +83,7 @@ Contains no hardware-specific code.
 ### Main classes:
 - `LinkFrame` – Represents a LINK message.  
 - `LinkParser` – Handles message parsing and validation.  
-- `LinkCommand` – Defines standard LINK commands (`GETAPP`, `GETV`, `RETURN`, `AUTH`, `AUTH_INIT`).
+- `LinkCommand` – Defines standard LINK commands (`GETAPP`, `GETV`, `RETURN`, `AUTH`, `AUTH_INIT`, `CHPWD`).
 - `ILinkCryptoProvider` – Interface for pluggable encryption backends (AES, etc.)  
 
 ## 2️. LINK.Transport.Serial
@@ -214,7 +214,7 @@ Authentication uses a **challenge-response** mechanism based on negotiated rando
 
 The device announces its supported hash method via the `HASH` field in the `GETV` response.
 
-`LINK:DRAGON:RETURN:GETV:LINKv1.1:UID=0x12345678:HASH=SHA256:LOCKED=true\0`
+`LINK\x1fDRAGON\x1fRETURN\x1fGETV\x1fLINKv1.1\x1fUID=0x12345678\x1fHASH=SHA256\x1fLOCKED=true\0`
 
 Supported values: `SHA1`, `SHA256`, `SHA384`, `SHA512`.
 
@@ -224,9 +224,9 @@ The client generates a large random number (256-bit, hex-encoded) and sends it t
 The device responds with its own random number.
 
 **Command:**  
-`LINK:[APP-ID]:AUTH_INIT:[CLIENT_NONCE]\0`  
+`LINK\x1f[APP-ID]\x1fAUTH_INIT\x1f[CLIENT_NONCE]\0`  
 **Response:**  
-`LINK:[APP-ID]:RETURN:AUTH_INIT:[DEVICE_NONCE]\0`
+`LINK\x1f[APP-ID]\x1fRETURN\x1fAUTH_INIT\x1f[DEVICE_NONCE]\0`
 
 Both nonces are preserved by the client and can be **reused** for subsequent authentications within the same session, avoiding repeated nonce exchanges.
 
@@ -235,22 +235,22 @@ Both nonces are preserved by the client and can be **reused** for subsequent aut
 The client computes: `HASH(clientNonce + deviceNonce + password)` using the negotiated algorithm, and sends the resulting hex digest.
 
 **Command:**  
-`LINK:[APP-ID]:AUTH:[HASHED_PASSWORD]\0`  
+`LINK\x1f[APP-ID]\x1fAUTH\x1f[HASHED_PASSWORD]\0`  
 **Response:**  
-`LINK:[APP-ID]:RETURN:AUTH:OK\0`  
-`LINK:[APP-ID]:RETURN:AUTH:ERR\0`
+`LINK\x1f[APP-ID]\x1fRETURN\x1fAUTH\x1fOK\0`  
+`LINK\x1f[APP-ID]\x1fRETURN\x1fAUTH\x1fERR\0`
 
 #### Example full sequence
 
 ```
-→ LINK:DRAGON:GETV
-← LINK:DRAGON:RETURN:GETV:LINKv1.1:UID=0x12345678:HASH=SHA256:LOCKED=true
+→ LINK\x1fDRAGON\x1fGETV
+← LINK\x1fDRAGON\x1fRETURN\x1fGETV\x1fLINKv1.1\x1fUID=0x12345678\x1fHASH=SHA256\x1fLOCKED=true
 
-→ LINK:DRAGON:AUTH_INIT:a1b2c3d4...  (64 hex chars, 256-bit client nonce)
-← LINK:DRAGON:RETURN:AUTH_INIT:e5f6a7b8...  (device nonce)
+→ LINK\x1fDRAGON\x1fAUTH_INIT\x1fa1b2c3d4...  (64 hex chars, 256-bit client nonce)
+← LINK\x1fDRAGON\x1fRETURN\x1fAUTH_INIT\x1fe5f6a7b8...  (device nonce)
 
-→ LINK:DRAGON:AUTH:9f86d081884c...  (SHA-256 hex digest)
-← LINK:DRAGON:RETURN:AUTH:OK
+→ LINK\x1fDRAGON\x1fAUTH\x1f9f86d081884c...  (SHA-256 hex digest)
+← LINK\x1fDRAGON\x1fRETURN\x1fAUTH\x1fOK
 ```
 
 #### Security properties
@@ -259,6 +259,93 @@ The client computes: `HASH(clientNonce + deviceNonce + password)` using the nego
 - Random nonces prevent **replay attacks** — each session produces a different hash even for the same password.
 - The hash algorithm is **negotiated** — the device announces what it implements, the client verifies it supports it.
 - Nonces can be **reused** within a session to avoid repeated `AUTH_INIT` round-trips.
+
+#### Password Change (`CHPWD`)
+
+After a successful authentication the client can request a password change.  
+The command carries the hashed old password, the hashed new password, and a CRC32 integrity check computed over the two hashes.
+
+**Command:**  
+`LINK:[APP-ID]:CHPWD:[OLD_HASH]:[NEW_HASH]:[CRC32]\0`
+
+Where:
+- `OLD_HASH` = `HASH(clientNonce + deviceNonce + oldPassword)`
+- `NEW_HASH` = `HASH(clientNonce + deviceNonce + newPassword)`
+- `CRC32`   = CRC32 of `OLD_HASH + NEW_HASH` (8-char lowercase hex)
+
+**Responses:**
+
+| Response | Meaning |
+|---|---|
+| `LINK:[APP-ID]:RETURN:CHPWD:OK\0` | Password changed successfully |
+| `LINK:[APP-ID]:RETURN:CHPWD:ERR:BAD_OLD_PWD\0` | Old password hash does not match |
+| `LINK:[APP-ID]:RETURN:CHPWD:ERR:BAD_CRC\0` | CRC32 integrity check failed |
+
+**Device verification order:**
+1. Verify `CRC32` matches `CRC32(OLD_HASH + NEW_HASH)` → if not, reply `ERR:BAD_CRC`.
+2. Verify `OLD_HASH` matches the expected hash for the current password → if not, reply `ERR:BAD_OLD_PWD`.
+3. Store the new password and reply `OK`.
+
+**Example sequence (following a successful AUTH):**
+
+```
+→ LINK:DRAGON:CHPWD:9f86d081884c...:e3b0c44298fc...:a1b2c3d4
+← LINK:DRAGON:RETURN:CHPWD:OK
+```
+
+**SDK usage:**
+
+```csharp
+var authResult = await client.AuthenticateAsync("DRAGON", "oldPass", deviceInfo);
+
+if (authResult.State.IsAuthenticated)
+{
+    var chpwd = await client.ChangePasswordAsync(
+        "DRAGON", "oldPass", "newPass", deviceInfo, authResult.Nonces);
+
+    if (chpwd.Success)
+        Console.WriteLine("Password changed successfully.");
+    else
+        Console.WriteLine($"Failed: {chpwd.Error}");
+        // chpwd.Error is "BAD_OLD_PWD" or "BAD_CRC"
+}
+```
+
+#### Password Change (`CHPWD`)
+
+After a successful authentication the client can request a password change.  
+The command carries the hashed old password, the hashed new password, and a CRC32 integrity check computed over the two hashes.
+
+**Command:**  
+`LINK:[APP-ID]:CHPWD:[OLD_HASH]:[NEW_HASH]:[CRC32]\0`  
+**Response:**  
+`LINK:[APP-ID]:RETURN:CHPWD:OK\0`  
+`LINK:[APP-ID]:RETURN:CHPWD:ERR\0`
+
+Where:
+- `OLD_HASH` = `HASH(clientNonce + deviceNonce + oldPassword)`
+- `NEW_HASH` = `HASH(clientNonce + deviceNonce + newPassword)`
+- `CRC32`   = CRC32 of `OLD_HASH + NEW_HASH` (8-char lowercase hex)
+
+**Example sequence (following a successful AUTH):**
+
+```
+→ LINK:DRAGON:CHPWD:9f86d081884c...:e3b0c44298fc...:a1b2c3d4
+← LINK:DRAGON:RETURN:CHPWD:OK
+```
+
+**SDK usage:**
+
+```csharp
+var authResult = await client.AuthenticateAsync("DRAGON", "oldPass", deviceInfo);
+
+if (authResult.State.IsAuthenticated)
+{
+    var chpwd = await client.ChangePasswordAsync(
+        "DRAGON", "oldPass", "newPass", deviceInfo, authResult.Nonces);
+    Console.WriteLine($"Password changed: {chpwd.Success}");
+}
+```
 
 ### **2. Encryption Support**
 
@@ -269,7 +356,7 @@ Encryption is configured per device and announced in `GETV`.
 - Both sides must agree on the mode and key before communication.  
 
 Example `GETV` extended response:
-`LINK:DRAGON:RETURN:GETV:LINKv1.1:UID=0x12345678:MODEL=Dragon-Sensor:ENC=AES128:HASH=SHA256:LOCKED=true\0`
+`LINK\x1fDRAGON\x1fRETURN\x1fGETV\x1fLINKv1.1\x1fUID=0x12345678\x1fMODEL=Dragon-Sensor\x1fENC=AES128\x1fHASH=SHA256\x1fLOCKED=true\0`
 
 ### **3. STM32 Compatibility and Software Crypto**
 
@@ -288,6 +375,7 @@ The software crypto component is delivered as a small optional module, keeping c
 |----------|--------------|------------|--------------|
 | `AUTH_INIT` | Nonce exchange for challenge-response | No (required if `AUTH` is used) | Secure authentication setup |
 | `AUTH` | Hashed password authentication | No | Device access control |
+| `CHPWD` | Hashed password change with CRC32 integrity | No | Change device password |
 | `ENCRYPTION` | Encrypted communication | No | Protect data exchanges |
 | `SW_CRYPTO` | Software crypto fallback | No | For STM32 without HW crypto |
 
@@ -303,12 +391,12 @@ When a LINK frame exceeds this limit (e.g. long hashes or nonces), the transport
 The transport implementations (`LinkSerialTransport`, `LinkTcpTransport`) split outgoing frame data into chunks before writing to the underlying stream:
 
 ```
-Frame: "LINK:DRAGON:AUTH:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08\0"
+Frame: "LINK\x1fDRAGON\x1fAUTH\x1f9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08\0"
        ──────────────────────────────── 82 bytes ─────────────────────────────────────
 
 MaxPacketSize = 64
 
-Chunk 1: [bytes  0..63]  "LINK:DRAGON:AUTH:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b"  (64 bytes)
+Chunk 1: [bytes  0..63]  "LINK\x1fDRAGON\x1fAUTH\x1f9f86d081884c7d659a2feaa0c55ad015a3bf4f1b"  (64 bytes)
 Chunk 2: [bytes 64..81]  "2b0b822cd15d6c15b0f00a08\0"                                (18 bytes)
 ```
 

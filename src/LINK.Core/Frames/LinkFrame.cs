@@ -36,6 +36,6 @@ public sealed class LinkFrame
         parts.Add(Command);
         parts.AddRange(Arguments);
 
-        return string.Join(':', parts) + '\0';
+        return string.Join('\x1f', parts) + '\0';
     }
 }

@@ -30,7 +30,7 @@ public sealed class LinkParser
         if (string.IsNullOrWhiteSpace(raw))
             return;
 
-        var parts = raw.Split(':', StringSplitOptions.RemoveEmptyEntries);
+        var parts = raw.Split('\x1f', StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length < 2)
             return;
 
@@ -44,7 +44,7 @@ public sealed class LinkParser
             return;
         }
 
-        // Cas standard : LINK:APP:COMMAND[:ARGS...]
+        // Cas standard : LINK\x1fAPP\x1fCOMMAND[\x1fARGS...]
         if (parts.Length < 3)
             return;
 

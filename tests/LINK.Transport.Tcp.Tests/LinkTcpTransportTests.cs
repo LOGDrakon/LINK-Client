@@ -80,7 +80,7 @@ public class LinkTcpTransportTests : IAsyncDisposable
         int read = serverStream.Read(buf, 0, buf.Length);
         var received = Encoding.ASCII.GetString(buf, 0, read);
 
-        Assert.Equal("LINK:DRAGON:GETV\0", received);
+        Assert.Equal("LINK\x1fDRAGON\x1fGETV\0", received);
 
         serverClient.Dispose();
         await transport.DisposeAsync();
@@ -90,7 +90,7 @@ public class LinkTcpTransportTests : IAsyncDisposable
     public async Task FrameReceived_IsRaisedForIncomingFrame()
     {
         var tcs = new TaskCompletionSource<LinkFrame>(TaskCreationOptions.RunContinuationsAsynchronously);
-        var serverTask = AcceptAndSendAsync("LINK:DRAGON:RETURN:GETV:LINKv1.1\0");
+        var serverTask = AcceptAndSendAsync("LINK\x1fDRAGON\x1fRETURN\x1fGETV\x1fLINKv1.1\0");
 
         var transport = new LinkTcpTransport(new LinkTcpOptions
         {
@@ -120,7 +120,7 @@ public class LinkTcpTransportTests : IAsyncDisposable
         var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
 
         var serverTask = AcceptAndSendAsync(
-            "LINK:DRAGON:RETURN:AUTH:OK\0LINK:DRAGON:RETURN:GETTEMP:24.6\0");
+            "LINK\x1fDRAGON\x1fRETURN\x1fAUTH\x1fOK\0LINK\x1fDRAGON\x1fRETURN\x1fGETTEMP\x1f24.6\0");
 
         var transport = new LinkTcpTransport(new LinkTcpOptions
         {

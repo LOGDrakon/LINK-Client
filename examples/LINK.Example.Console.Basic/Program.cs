@@ -62,6 +62,18 @@ Console.WriteLine($"Hash method: {info.HashMethod}");
 var authResult = await dragon.AuthenticateAsync("password", info);
 Console.WriteLine($"Authenticated: {authResult.State.IsAuthenticated}");
 
+// Change password after successful authentication
+if (authResult.State.IsAuthenticated)
+{
+    var chpwd = await dragon.ChangePasswordAsync("password", "newpass", info, authResult.Nonces);
+
+    if (chpwd.Success)
+        Console.WriteLine("Password changed successfully.");
+    else
+        Console.WriteLine($"Password change failed: {chpwd.Error}");
+        // chpwd.Error is "BAD_OLD_PWD" or "BAD_CRC"
+}
+
 var frame = await dragon.SendAsync("GETTEMP");
 Console.WriteLine(frame.ToString());
 

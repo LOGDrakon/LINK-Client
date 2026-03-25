@@ -7,13 +7,14 @@ real device would.  It is the easiest way to test the .NET SDK without needing
 a physical device or a virtual COM-port bridge.
 
 Supported frames (sent by the client):
-  LINK:GETAPP\0
-  LINK:<APP-ID>:GETV\0
-  LINK:<APP-ID>:AUTH_INIT:<CLIENT_NONCE>\0   → nonce exchange (challenge-response)
-  LINK:<APP-ID>:AUTH:<HASHED_PASSWORD>\0    → hash = H(clientNonce + deviceNonce + password)
-  LINK:<APP-ID>:GETTEMP\0
-  LINK:<APP-ID>:PING\0
-  LINK:<APP-ID>:<any command>\0  → replied with ERR:UNKNOWN_COMMAND
+  LINK\x1fGETAPP\0
+  LINK\x1f<APP-ID>\x1fGETV\0
+  LINK\x1f<APP-ID>\x1fAUTH_INIT\x1f<CLIENT_NONCE>\0   → nonce exchange (challenge-response)
+  LINK\x1f<APP-ID>\x1fAUTH\x1f<HASHED_PASSWORD>\0    → hash = H(clientNonce + deviceNonce + password)
+  LINK\x1f<APP-ID>\x1fCHPWD\x1f<OLD_HASH>\x1f<NEW_HASH>\x1f<CRC32>\0  → change password
+  LINK\x1f<APP-ID>\x1fGETTEMP\0
+  LINK\x1f<APP-ID>\x1fPING\0
+  LINK\x1f<APP-ID>\x1f<any command>\0  → replied with ERR\x1fUNKNOWN_COMMAND
 
 The hash algorithm is announced by the device in GETV (e.g. HASH=SHA256).
 The client must first call AUTH_INIT to exchange nonces, then AUTH with the
@@ -33,6 +34,7 @@ import asyncio
 import hashlib
 import secrets
 import sys
+import zlib
 from dataclasses import dataclass, field
 
 
@@ -76,6 +78,11 @@ def compute_password_hash(hash_method: str, client_nonce: str,
     return h.hexdigest()
 
 
+def compute_crc32(data: str) -> str:
+    """Compute CRC32 of the given string and return it as 8-char lowercase hex."""
+    return format(zlib.crc32(data.encode("utf-8")) & 0xFFFFFFFF, "08x")
+
+
 # ---------------------------------------------------------------------------
 # Frame helpers
 # ---------------------------------------------------------------------------
@@ -86,7 +93,7 @@ def build_frame(app_id, command, *args) -> bytes:
         parts.append(app_id)
     parts.append(command)
     parts.extend(args)
-    return (":".join(parts) + "\0").encode("latin-1")
+    return ("\x1f".join(parts) + "\0").encode("latin-1")
 
 
 def parse_frame(raw: str) -> dict:
@@ -94,7 +101,7 @@ def parse_frame(raw: str) -> dict:
     if not raw.strip():
         raise ValueError("empty frame")
 
-    parts = [p for p in raw.split(":") if p != ""]
+    parts = [p for p in raw.split("\x1f") if p != ""]
     if len(parts) < 2 or parts[0] != "LINK":
         raise ValueError(f"invalid LINK frame: {raw!r}")
 
@@ -195,8 +202,39 @@ class ClientHandler:
                 self.send(build_frame(state.app_id, "RETURN", "AUTH", "ERR"))
             return
 
-        if command == "GETTEMP":
-            self.send(build_frame(state.app_id, "RETURN", "GETTEMP",
+        if command == "CHPWD":
+            if self._client_nonce is None or self._device_nonce is None:
+                self.log("CHPWD received without prior AUTH_INIT")
+                self.send(build_frame(state.app_id, "RETURN", "CHPWD", "ERR"))
+                return
+            if len(args) < 3:
+                self.log("CHPWD missing arguments")
+                self.send(build_frame(state.app_id, "RETURN", "CHPWD", "ERR"))
+                return
+            old_hash, new_hash, crc = args[0], args[1], args[2]
+            expected_crc = compute_crc32(old_hash + new_hash)
+            if crc != expected_crc:
+                self.log(f"CHPWD CRC mismatch: got={crc} expected={expected_crc}")
+                self.send(build_frame(state.app_id, "RETURN", "CHPWD",
+                                      "ERR", "BAD_CRC"))
+                return
+            expected_old = compute_password_hash(
+                state.hash_method, self._client_nonce,
+                self._device_nonce, state.password)
+            if old_hash != expected_old:
+                self.log("CHPWD old password hash mismatch")
+                self.send(build_frame(state.app_id, "RETURN", "CHPWD",
+                                      "ERR", "BAD_OLD_PWD"))
+                return
+            # Accept — we cannot reverse the new hash, so we store the raw
+            # hash for this session.  A real device would store the new
+            # password in flash.  For the simulator we simply log the event.
+            self.log("CHPWD accepted — password changed (simulator cannot "
+                     "persist the new password across restarts)")
+            self.send(build_frame(state.app_id, "RETURN", "CHPWD", "OK"))
+            return
+
+        if command == "GETTEMP":            self.send(build_frame(state.app_id, "RETURN", "GETTEMP",
                                   f"{state.temperature_c:.1f}\xb0C"))
             return
 

@@ -11,7 +11,7 @@ public class LinkChunkedParsingTests
         parser.FrameReceived += f => received = f;
 
         // Simulate a long frame split across 3 chunks
-        var fullFrame = "LINK:DRAGON:AUTH:abcdefghij1234567890abcdefghij\0";
+        var fullFrame = "LINK\x1fDRAGON\x1fAUTH\x1fabcdefghij1234567890abcdefghij\0";
         int chunkSize = 16;
 
         for (int i = 0; i < fullFrame.Length; i += chunkSize)
@@ -33,7 +33,7 @@ public class LinkChunkedParsingTests
         LinkFrame? received = null;
         parser.FrameReceived += f => received = f;
 
-        var fullFrame = "LINK:APP:CMD:ARG\0";
+        var fullFrame = "LINK\x1fAPP\x1fCMD\x1fARG\0";
 
         foreach (char c in fullFrame)
             parser.Feed(new ReadOnlySpan<char>(in c));
@@ -51,7 +51,7 @@ public class LinkChunkedParsingTests
         var received = new List<LinkFrame>();
         parser.FrameReceived += f => received.Add(f);
 
-        var data = "LINK:A:CMD1:LONGARG123456789\0LINK:B:CMD2:SHORT\0";
+        var data = "LINK\x1fA\x1fCMD1\x1fLONGARG123456789\0LINK\x1fB\x1fCMD2\x1fSHORT\0";
         int chunkSize = 10;
 
         for (int i = 0; i < data.Length; i += chunkSize)
