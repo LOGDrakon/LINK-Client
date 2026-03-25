@@ -6,7 +6,9 @@ namespace Link.Client.Tests.Fakes;
 internal sealed class FakeTransport : ILinkTransport
 {
     public event Action<LinkFrame>? FrameReceived;
+    public event Action<LinkFrame>? FrameSent;
     public bool IsOpen { get; private set; }
+    public List<LinkFrame> SentFrames { get; } = new();
 
     public Task OpenAsync(CancellationToken _ = default)
     {
@@ -22,7 +24,8 @@ internal sealed class FakeTransport : ILinkTransport
 
     public Task SendAsync(LinkFrame frame, CancellationToken _ = default)
     {
-        // Rien par défaut — le test déclenchera les réponses
+        SentFrames.Add(frame);
+        FrameSent?.Invoke(frame);
         return Task.CompletedTask;
     }
 

@@ -7,7 +7,8 @@ using Link.Transport.Serial;
 
 var transport = new LinkSerialTransport(new LinkSerialOptions
 {
-    PortName = "COM3"
+    PortName = "COM3",
+    // MaxPacketSize = 64 (default) — chunks writes for STM32 USB FS compatibility
 });
 
 var client = new LinkClient(new LinkClientOptions
@@ -21,8 +22,9 @@ var info = await client.GetDeviceInfoAsync("DRAGON");
 
 if (info.IsLocked)
 {
-    var state = await client.AuthenticateAsync("DRAGON", "1234");
-    Console.WriteLine($"Authenticated: {state.IsAuthenticated}");
+    var authResult = await client.AuthenticateAsync("DRAGON", "1234", info);
+    Console.WriteLine($"Authenticated: {authResult.State.IsAuthenticated}");
+    // authResult.Nonces can be reused for subsequent authentications
 }
 
 var crypto = await client.NegotiateEncryptionAsync(

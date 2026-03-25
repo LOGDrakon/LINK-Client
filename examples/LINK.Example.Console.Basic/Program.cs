@@ -31,7 +31,8 @@ if (useTcp)
     transport = new LinkTcpTransport(new LinkTcpOptions
     {
         Host = host,
-        Port = port
+        Port = port,
+        // MaxPacketSize = 64 (default) — chunks writes for STM32 USB FS compatibility
     });
 }
 else
@@ -40,7 +41,8 @@ else
     transport = new LinkSerialTransport(new LinkSerialOptions
     {
         PortName = "COM3",
-        BaudRate = 115200
+        BaudRate = 115200,
+        // MaxPacketSize = 64 (default) — chunks writes for STM32 USB FS compatibility
     });
 }
 
@@ -55,8 +57,10 @@ var dragon = client.WithAppId("DRAGON");
 
 var info = await dragon.GetDeviceInfoAsync();
 Console.WriteLine($"Version: {info.Version}");
+Console.WriteLine($"Hash method: {info.HashMethod}");
 
-await dragon.AuthenticateAsync("password");
+var authResult = await dragon.AuthenticateAsync("password", info);
+Console.WriteLine($"Authenticated: {authResult.State.IsAuthenticated}");
 
 var frame = await dragon.SendAsync("GETTEMP");
 Console.WriteLine(frame.ToString());

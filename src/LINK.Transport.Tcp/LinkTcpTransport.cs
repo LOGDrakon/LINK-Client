@@ -11,6 +11,7 @@ public sealed class LinkTcpTransport : ILinkTransport
     private readonly LinkTcpOptions _options;
     private readonly LinkParser _parser = new();
     private readonly Encoding _encoding = Encoding.ASCII;
+    private readonly int _maxPacketSize;
 
     private TcpClient? _tcpClient;
     private NetworkStream? _stream;
@@ -31,6 +32,7 @@ public sealed class LinkTcpTransport : ILinkTransport
             throw new ArgumentOutOfRangeException(nameof(options), "Port must be between 1 and 65535.");
 
         _options = options;
+        _maxPacketSize = options.MaxPacketSize;
         _parser.FrameReceived += f => FrameReceived?.Invoke(f);
     }
 
@@ -80,7 +82,20 @@ public sealed class LinkTcpTransport : ILinkTransport
             throw new InvalidOperationException("TCP transport is not open.");
 
         var data = _encoding.GetBytes(frame.ToString());
-        await _stream.WriteAsync(data, cancellationToken).ConfigureAwait(false);
+
+        if (_maxPacketSize <= 0 || data.Length <= _maxPacketSize)
+        {
+            await _stream.WriteAsync(data, cancellationToken).ConfigureAwait(false);
+        }
+        else
+        {
+            for (int offset = 0; offset < data.Length; offset += _maxPacketSize)
+            {
+                int chunkSize = Math.Min(_maxPacketSize, data.Length - offset);
+                await _stream.WriteAsync(
+                    data.AsMemory(offset, chunkSize), cancellationToken).ConfigureAwait(false);
+            }
+        }
     }
 
     private async Task ReadLoopAsync(CancellationToken ct)

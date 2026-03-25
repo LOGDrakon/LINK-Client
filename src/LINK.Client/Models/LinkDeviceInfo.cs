@@ -8,6 +8,7 @@ public sealed record LinkDeviceInfo
     public string? Model { get; init; }
     public bool IsLocked { get; init; }
     public string EncryptionMode { get; init; } = "NONE";
+    public string HashMethod { get; init; } = "NONE";
 
     public static LinkDeviceInfo Parse(string appId, IReadOnlyList<string> args)
     {
@@ -31,6 +32,7 @@ public sealed record LinkDeviceInfo
                 "UID" => info with { Uid = parts[1] },
                 "MODEL" => info with { Model = parts[1] },
                 "ENC" => info with { EncryptionMode = parts[1] },
+                "HASH" => info with { HashMethod = parts[1] },
                 "LOCKED" => info with { IsLocked = parts[1] == "true" },
                 _ => info
             };

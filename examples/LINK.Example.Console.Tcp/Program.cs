@@ -1,6 +1,6 @@
 // Example: connect to a LINK device over TCP.
 // Run the Python TCP simulator first:
-//   python examples/LINK.Device.Simulator/link_tcp_simulator.py --app-id DRAGON --password password
+//   python examples/LINK.Device.Simulator/link_tcp_simulator.py --app-id DRAGON --password password --hash SHA256
 //
 // Then run this example:
 //   dotnet run                         – connects to 127.0.0.1:5000 (default)
@@ -21,7 +21,8 @@ await using var client = new LinkClient(new LinkClientOptions
     {
         Host = host,
         Port = port,
-        ConnectTimeout = TimeSpan.FromSeconds(5)
+        ConnectTimeout = TimeSpan.FromSeconds(5),
+        // MaxPacketSize = 64 (default) — chunks writes for STM32 USB FS compatibility
     }),
     CommandTimeout = TimeSpan.FromSeconds(5)
 });
@@ -36,8 +37,8 @@ Console.WriteLine($"Device version : {info.Version}");
 Console.WriteLine($"Device model   : {info.Model ?? "(not reported)"}");
 Console.WriteLine($"Device UID     : {info.Uid ?? "(not reported)"}");
 
-await dragon.AuthenticateAsync("password");
-Console.WriteLine("Authenticated.");
+var authResult = await dragon.AuthenticateAsync("password", info);
+Console.WriteLine($"Authenticated: {authResult.State.IsAuthenticated}");
 
 var tempFrame = await dragon.SendAsync("GETTEMP");
 Console.WriteLine($"Temperature    : {string.Join(":", tempFrame.ReturnArguments)}");

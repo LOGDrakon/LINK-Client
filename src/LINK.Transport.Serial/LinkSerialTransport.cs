@@ -11,6 +11,7 @@ public sealed class LinkSerialTransport : ILinkTransport
     private readonly SerialPort _port;
     private readonly LinkParser _parser = new();
     private readonly Encoding _encoding = Encoding.ASCII;
+    private readonly int _maxPacketSize;
 
     public event Action<LinkFrame>? FrameReceived;
     public event Action<Exception>? TransportError;
@@ -21,6 +22,8 @@ public sealed class LinkSerialTransport : ILinkTransport
     {
         if (string.IsNullOrWhiteSpace(options.PortName))
             throw new ArgumentException(nameof(options.PortName));
+
+        _maxPacketSize = options.MaxPacketSize;
 
         _port = new SerialPort(
             options.PortName,
@@ -59,7 +62,21 @@ public sealed class LinkSerialTransport : ILinkTransport
             throw new InvalidOperationException("Serial port not open");
 
         var data = _encoding.GetBytes(frame.ToString());
-        _port.Write(data, 0, data.Length);
+
+        if (_maxPacketSize <= 0 || data.Length <= _maxPacketSize)
+        {
+            _port.Write(data, 0, data.Length);
+        }
+        else
+        {
+            for (int offset = 0; offset < data.Length; offset += _maxPacketSize)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                int chunkSize = Math.Min(_maxPacketSize, data.Length - offset);
+                _port.Write(data, offset, chunkSize);
+            }
+        }
+
         return Task.CompletedTask;
     }
 

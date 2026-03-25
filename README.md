@@ -14,7 +14,8 @@ Commandes standard côté protocole :
 - `GETAPP` : récupère l'identifiant applicatif (`APP-ID`).
 - `GETV` : récupère la version/informations du device.
 - `RETURN` : réponse d'un appareil à une commande.
-- `AUTH` : authentification optionnelle selon le firmware.
+- `AUTH` : authentification par hash avec échange de nonces (challenge-response).
+- `AUTH_INIT` : échange de nonces aléatoires entre client et device (précède `AUTH`).
 
 ## Contenu du repository
 

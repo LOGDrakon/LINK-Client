@@ -23,11 +23,18 @@ public sealed class LinkDeviceClient
     public Task<LinkDeviceInfo> GetDeviceInfoAsync(CancellationToken ct = default)
         => _client.GetDeviceInfoAsync(AppId, ct);
 
-    public Task<LinkSecurityState> AuthenticateAsync(string password, CancellationToken ct = default)
+    public Task<LinkAuthResult> AuthenticateAsync(
+        string password,
+        LinkDeviceInfo deviceInfo,
+        LinkAuthNonces? existingNonces = null,
+        CancellationToken ct = default)
     {
         var helper = new AuthHelper(_client);
-        return helper.ExecuteAsync(AppId, password, ct);
+        return helper.ExecuteAsync(AppId, password, deviceInfo, existingNonces, ct);
     }
+
+    public Task DoneAsync(CancellationToken ct = default)
+        => _client.DoneAsync(AppId, ct);
 
     public Task<LinkFrame> SendAsync(string command, CancellationToken ct = default, params string[] args)
         => _client.SendCommandAsync(AppId, command, ct, args);

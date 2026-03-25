@@ -40,10 +40,10 @@ Retrieves information about the device and the LINK version.
   - MCU UID (e.g., STM32 unique ID)
   - Device model reference
   - Hardware revision, etc.
-  - May include security-related information (e.g., `LOCKED=true`, `ENC=AES128`).
+  - May include security-related information (e.g., `LOCKED=true`, `ENC=AES128`, `HASH=SHA256`).
 
 **Example response:**  
-`LINK:DRAGON:RETURN:GETV:LINKv1.0:UID=0x12345678:MODEL=Dragon-Sensor\0`
+`LINK:DRAGON:RETURN:GETV:LINKv1.0:UID=0x12345678:MODEL=Dragon-Sensor:HASH=SHA256:LOCKED=true\0`
 
 ### `RETURN`
 Used by the device to respond to a command.  
@@ -83,7 +83,7 @@ Contains no hardware-specific code.
 ### Main classes:
 - `LinkFrame` – Represents a LINK message.  
 - `LinkParser` – Handles message parsing and validation.  
-- `LinkCommand` – Defines standard LINK commands (`GETAPP`, `GETV`, `RETURN`).  
+- `LinkCommand` – Defines standard LINK commands (`GETAPP`, `GETV`, `RETURN`, `AUTH`, `AUTH_INIT`).
 - `ILinkCryptoProvider` – Interface for pluggable encryption backends (AES, etc.)  
 
 ## 2️. LINK.Transport.Serial
@@ -94,9 +94,13 @@ Contains no hardware-specific code.
 Provides a Serial/COM implementation of the LINK transport layer.  
 Handles data transmission over USB-to-Serial bridges or virtual COM ports.
 
+### Packet fragmentation:
+All transports support automatic **packet fragmentation** to comply with hardware buffer limits (see [Transport-Level Packet Fragmentation](#5-transport-level-packet-fragmentation) below).
+
 ### Main classes:
 - `LinkSerialPort` – Wraps `SerialPort` or `Windows.Devices.SerialCommunication`.
 - `LinkSerialTransport` – Converts raw data to/from `LinkFrame` using `LinkParser`.
+- `LinkSerialOptions` – Configuration including `MaxPacketSize` (default 64).
 
 ## 3️. LINK.Client
 
@@ -136,6 +140,7 @@ public class LinkDeviceInfo
     public string Model { get; set; }
     public bool IsLocked { get; set; }
     public string EncryptionMode { get; set; } // e.g. NONE, AES128
+    public string HashMethod { get; set; }     // e.g. NONE, SHA256, SHA512
 }
 ```
 
@@ -201,16 +206,59 @@ LINK supports optional security mechanisms that can be enabled per device or app
 Devices can require a password before certain commands are accepted.  
 This feature allows locking sensitive actions such as configuration changes or firmware updates.
 
+Authentication uses a **challenge-response** mechanism based on negotiated random nonces and a hash algorithm announced by the device in `GETV`.
+
+#### Authentication Flow
+
+**Step 1 — Hash method discovery (`GETV`)**
+
+The device announces its supported hash method via the `HASH` field in the `GETV` response.
+
+`LINK:DRAGON:RETURN:GETV:LINKv1.1:UID=0x12345678:HASH=SHA256:LOCKED=true\0`
+
+Supported values: `SHA1`, `SHA256`, `SHA384`, `SHA512`.
+
+**Step 2 — Nonce exchange (`AUTH_INIT`)**
+
+The client generates a large random number (256-bit, hex-encoded) and sends it to the device.  
+The device responds with its own random number.
+
 **Command:**  
-`LINK:[APP-ID]:AUTH:[PASSWORD]\0`  
+`LINK:[APP-ID]:AUTH_INIT:[CLIENT_NONCE]\0`  
+**Response:**  
+`LINK:[APP-ID]:RETURN:AUTH_INIT:[DEVICE_NONCE]\0`
+
+Both nonces are preserved by the client and can be **reused** for subsequent authentications within the same session, avoiding repeated nonce exchanges.
+
+**Step 3 — Hashed authentication (`AUTH`)**
+
+The client computes: `HASH(clientNonce + deviceNonce + password)` using the negotiated algorithm, and sends the resulting hex digest.
+
+**Command:**  
+`LINK:[APP-ID]:AUTH:[HASHED_PASSWORD]\0`  
 **Response:**  
 `LINK:[APP-ID]:RETURN:AUTH:OK\0`  
-`LINK:[APP-ID]:RETURN:AUTH:ERR\0` 
+`LINK:[APP-ID]:RETURN:AUTH:ERR\0`
 
-- When authentication is enabled, the device starts in a **LOCKED** state.  
-- Only `GETAPP` and `GETV` remain accessible before authentication.  
-- Once unlocked, all commands for the given APP-ID are enabled.  
-- The password can be stored in the device configuration or derived from hardware (e.g., UID-based key).
+#### Example full sequence
+
+```
+→ LINK:DRAGON:GETV
+← LINK:DRAGON:RETURN:GETV:LINKv1.1:UID=0x12345678:HASH=SHA256:LOCKED=true
+
+→ LINK:DRAGON:AUTH_INIT:a1b2c3d4...  (64 hex chars, 256-bit client nonce)
+← LINK:DRAGON:RETURN:AUTH_INIT:e5f6a7b8...  (device nonce)
+
+→ LINK:DRAGON:AUTH:9f86d081884c...  (SHA-256 hex digest)
+← LINK:DRAGON:RETURN:AUTH:OK
+```
+
+#### Security properties
+
+- The password is **never transmitted in clear text**.
+- Random nonces prevent **replay attacks** — each session produces a different hash even for the same password.
+- The hash algorithm is **negotiated** — the device announces what it implements, the client verifies it supports it.
+- Nonces can be **reused** within a session to avoid repeated `AUTH_INIT` round-trips.
 
 ### **2. Encryption Support**
 
@@ -221,7 +269,7 @@ Encryption is configured per device and announced in `GETV`.
 - Both sides must agree on the mode and key before communication.  
 
 Example `GETV` extended response:
-`LINK:DRAGON:RETURN:GETV:LINKv1.1:UID=0x12345678:MODEL=Dragon-Sensor:ENC=AES128:LOCKED=true\0`
+`LINK:DRAGON:RETURN:GETV:LINKv1.1:UID=0x12345678:MODEL=Dragon-Sensor:ENC=AES128:HASH=SHA256:LOCKED=true\0`
 
 ### **3. STM32 Compatibility and Software Crypto**
 
@@ -238,9 +286,66 @@ The software crypto component is delivered as a small optional module, keeping c
 
 | Feature | Description | Mandatory | Typical Use |
 |----------|--------------|------------|--------------|
-| `AUTH` | Password-based authentication | No | Device access control |
+| `AUTH_INIT` | Nonce exchange for challenge-response | No (required if `AUTH` is used) | Secure authentication setup |
+| `AUTH` | Hashed password authentication | No | Device access control |
 | `ENCRYPTION` | Encrypted communication | No | Protect data exchanges |
 | `SW_CRYPTO` | Software crypto fallback | No | For STM32 without HW crypto |
+
+### **5. Transport-Level Packet Fragmentation**
+
+STM32 USB Full Speed (FS) endpoints have a **hardware buffer limit of 64 bytes per packet**.  
+When a LINK frame exceeds this limit (e.g. long hashes or nonces), the transport layer **automatically fragments** the data into chunks of `MaxPacketSize` bytes.
+
+#### How it works
+
+**Sending (PC → Device):**
+
+The transport implementations (`LinkSerialTransport`, `LinkTcpTransport`) split outgoing frame data into chunks before writing to the underlying stream:
+
+```
+Frame: "LINK:DRAGON:AUTH:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08\0"
+       ──────────────────────────────── 82 bytes ─────────────────────────────────────
+
+MaxPacketSize = 64
+
+Chunk 1: [bytes  0..63]  "LINK:DRAGON:AUTH:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b"  (64 bytes)
+Chunk 2: [bytes 64..81]  "2b0b822cd15d6c15b0f00a08\0"                                (18 bytes)
+```
+
+**Receiving (Device → PC):**
+
+The `LinkParser` already accumulates incoming bytes in an internal buffer until it encounters the `\0` delimiter.  
+No changes are needed on the receive path — partial data is handled natively.
+
+#### Configuration
+
+`MaxPacketSize` is exposed on both transport option classes:
+
+```csharp
+// Serial (default: 64 — matches STM32 USB FS buffer)
+var serial = new LinkSerialTransport(new LinkSerialOptions
+{
+    PortName = "COM3",
+    MaxPacketSize = 64   // 0 = disable chunking
+});
+
+// TCP (default: 64 — consistent behaviour across transports)
+var tcp = new LinkTcpTransport(new LinkTcpOptions
+{
+    Host = "127.0.0.1",
+    Port = 5000,
+    MaxPacketSize = 64   // 0 = disable chunking
+});
+```
+
+#### Design rationale
+
+| Concern | Solution |
+|---|---|
+| STM32 USB FS buffer = 64 bytes | Chunk at transport level, transparent to upper layers |
+| No framing header needed | Protocol already uses `\0` as delimiter; `LinkParser` reassembles |
+| Future-proof | Any frame size works — nonces, hashes, long arguments |
+| Opt-out | Set `MaxPacketSize = 0` to disable (e.g. for transports without buffer limits) |
 
 ## Notes
 

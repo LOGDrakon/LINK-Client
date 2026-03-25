@@ -17,22 +17,33 @@ The simulator connects to one end of the pair; point the .NET
 Supported frames (sent by the client):
   LINK:GETAPP\0
   LINK:<APP-ID>:GETV\0
-  LINK:<APP-ID>:AUTH:<password>\0
+  LINK:<APP-ID>:AUTH_INIT:<CLIENT_NONCE>\0   → nonce exchange (challenge-response)
+  LINK:<APP-ID>:AUTH:<HASHED_PASSWORD>\0    → hash = H(clientNonce + deviceNonce + password)
   LINK:<APP-ID>:GETTEMP\0
   LINK:<APP-ID>:PING\0
   LINK:<APP-ID>:<any command>\0  → replied with ERR:UNKNOWN_COMMAND
+
+The hash algorithm is announced by the device in GETV (e.g. HASH=SHA256).
+The client must first call AUTH_INIT to exchange nonces, then AUTH with the
+hashed password.  Nonces can be reused within the same session.
 
 Usage:
   python link_serial_simulator.py                        # default COM10, 115200
   python link_serial_simulator.py --port COM11 --baud 9600
   python link_serial_simulator.py --app-id MYAPP --password secret --temp 36.6
+  python link_serial_simulator.py --hash SHA512 --locked
+  python link_serial_simulator.py --max-packet-size 32   # smaller chunks
+  python link_serial_simulator.py --max-packet-size 0    # no chunking
 
 Requirements:
   pip install pyserial
 """
 
 import argparse
+import hashlib
+import secrets
 import sys
+import time
 import threading
 from dataclasses import dataclass, field
 
@@ -57,9 +68,11 @@ class DeviceState:
     uid: str = "0x12345678"
     model: str = "Dragon-Sensor"
     enc: str = "NONE"
+    hash_method: str = "SHA256"
     locked: bool = False
     password: str = "password"
     temperature_c: float = 24.6
+    max_packet_size: int = 64
     extra_getv: list = field(default_factory=list)
 
     def getv_args(self) -> list:
@@ -68,10 +81,20 @@ class DeviceState:
             f"UID={self.uid}",
             f"MODEL={self.model}",
             f"ENC={self.enc}",
+            f"HASH={self.hash_method}",
             f"LOCKED={'true' if self.locked else 'false'}",
         ]
         args.extend(self.extra_getv)
         return args
+
+
+def compute_password_hash(hash_method: str, client_nonce: str,
+                          device_nonce: str, password: str) -> str:
+    """Compute H(clientNonce + deviceNonce + password) using the given algorithm."""
+    algo = hash_method.lower()
+    h = hashlib.new(algo)
+    h.update((client_nonce + device_nonce + password).encode("utf-8"))
+    return h.hexdigest()
 
 
 # ---------------------------------------------------------------------------
@@ -124,6 +147,8 @@ class SerialHandler:
         self.verbose = verbose
         self._buf = bytearray()
         self._running = False
+        self._client_nonce: str | None = None
+        self._device_nonce: str | None = None
 
     def log(self, msg: str):
         if self.verbose:
@@ -131,9 +156,20 @@ class SerialHandler:
                   file=sys.stderr, flush=True)
 
     def send(self, payload: bytes):
-        self.ser.write(payload)
-        self.ser.flush()
-        self.log(f"TX {payload!r}")
+        chunk_size = self.state.max_packet_size
+        if chunk_size > 0 and len(payload) > chunk_size:
+            for i in range(0, len(payload), chunk_size):
+                chunk = payload[i:i + chunk_size]
+                self.ser.write(chunk)
+                self.ser.flush()
+                self.log(f"TX chunk [{i}:{i + len(chunk)}] {chunk!r}")
+                # Small delay between chunks to simulate real hardware behaviour
+                if i + chunk_size < len(payload):
+                    time.sleep(0.001)
+        else:
+            self.ser.write(payload)
+            self.ser.flush()
+        self.log(f"TX {payload!r} ({len(payload)} bytes)")
 
     def handle_frame(self, raw: str):
         self.log(f"RX {raw!r}")
@@ -162,9 +198,25 @@ class SerialHandler:
                                   *state.getv_args()))
             return
 
+        if command == "AUTH_INIT":
+            self._client_nonce = args[0] if args else ""
+            self._device_nonce = secrets.token_hex(32)
+            self.log(f"Nonce exchange: client={self._client_nonce} "
+                     f"device={self._device_nonce}")
+            self.send(build_frame(state.app_id, "RETURN", "AUTH_INIT",
+                                  self._device_nonce))
+            return
+
         if command == "AUTH":
             supplied = args[0] if args else ""
-            if supplied == state.password:
+            if self._client_nonce is None or self._device_nonce is None:
+                self.log("AUTH received without prior AUTH_INIT")
+                self.send(build_frame(state.app_id, "RETURN", "AUTH", "ERR"))
+                return
+            expected = compute_password_hash(
+                state.hash_method, self._client_nonce,
+                self._device_nonce, state.password)
+            if supplied == expected:
                 state.locked = False
                 self.send(build_frame(state.app_id, "RETURN", "AUTH", "OK"))
             else:
@@ -248,6 +300,12 @@ def main():
     parser.add_argument("--model", default="Dragon-Sensor")
     parser.add_argument("--uid", default="0x12345678")
     parser.add_argument("--enc", default="NONE")
+    parser.add_argument("--hash", default="SHA256",
+                        choices=["SHA1", "SHA256", "SHA384", "SHA512"],
+                        help="Hash algorithm for AUTH (default: SHA256)")
+    parser.add_argument("--max-packet-size", type=int, default=64,
+                        help="Max bytes per serial write (simulates USB FS "
+                             "buffer); 0 = no chunking (default: 64)")
     parser.add_argument("--locked", action="store_true",
                         help="Start in locked state")
     parser.add_argument("--temp", type=float, default=24.6,
@@ -262,8 +320,10 @@ def main():
         model=args.model,
         uid=args.uid,
         enc=args.enc,
+        hash_method=args.hash,
         locked=args.locked,
         temperature_c=args.temp,
+        max_packet_size=args.max_packet_size,
     )
 
     ser = serial.Serial(

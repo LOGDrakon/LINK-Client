@@ -180,6 +180,48 @@ public class LinkTcpTransportTests : IAsyncDisposable
         serverClient.Dispose();
     }
 
+    [Fact]
+    public async Task SendAsync_ChunksLargeFrame()
+    {
+        var acceptTask = _listener.AcceptTcpClientAsync();
+
+        var transport = new LinkTcpTransport(new LinkTcpOptions
+        {
+            Host = "127.0.0.1",
+            Port = _port,
+            MaxPacketSize = 16
+        });
+        await transport.OpenAsync();
+
+        var serverClient = await acceptTask;
+        var serverStream = serverClient.GetStream();
+
+        // Build a frame larger than MaxPacketSize (16)
+        var frame = new LinkFrame("DRAGON", "AUTH", "abcdefghij1234567890");
+        var expected = frame.ToString();
+        Assert.True(expected.Length > 16);
+
+        await transport.SendAsync(frame);
+
+        // Read all chunks from the server side
+        var buf = new byte[256];
+        serverStream.ReadTimeout = 2000;
+        int totalRead = 0;
+        while (totalRead < expected.Length)
+        {
+            int read = serverStream.Read(buf, totalRead, buf.Length - totalRead);
+            if (read == 0)
+                break;
+            totalRead += read;
+        }
+
+        var received = Encoding.ASCII.GetString(buf, 0, totalRead);
+        Assert.Equal(expected, received);
+
+        serverClient.Dispose();
+        await transport.DisposeAsync();
+    }
+
     public async ValueTask DisposeAsync()
     {
         _listener.Stop();

@@ -14,4 +14,11 @@ public sealed class LinkTcpOptions
     /// <summary>Timeout waiting for a response after sending a command.
     /// Unused by the transport itself but exposed for convenience.</summary>
     public TimeSpan CommandTimeout { get; set; } = TimeSpan.FromSeconds(5);
+
+    /// <summary>
+    /// Maximum number of bytes sent per write operation.
+    /// Matches the USB FS hardware buffer size on STM32 devices (64 bytes).
+    /// Set to 0 to disable chunking.
+    /// </summary>
+    public int MaxPacketSize { get; set; } = 64;
 }
