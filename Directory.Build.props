@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <Version>1.1.0</Version>
+    <Authors>LOGDrakon</Authors>
+    <Company>LOGDrakon</Company>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/LOGDrakon/LINK-Client</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+</Project>
