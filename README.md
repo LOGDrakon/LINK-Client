@@ -147,7 +147,7 @@ Device de test : le simulateur `link_host_device` du dépôt LINK-Device exécut
 ### Android
 
 Le support Android (.NET for Android : BLE `BluetoothGatt`, USB host CDC, scan BLE)
-est développé sur une branche dédiée, voir `src/LINK.Transport.Android`.
+est développé sur la branche `ccr-414b321c-f4iwxg-android` (`src/LINK.Transport.Android`, guide `docs/LINK_Android.md`).
 
 ## Simulateur Python TCP (LINK v1)
 
