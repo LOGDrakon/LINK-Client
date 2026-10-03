@@ -3,6 +3,61 @@
 LINK is a custom communication protocol designed to allow a PC and a USB-connected device (typically STM32-based) to exchange structured data efficiently.  
 The project aims to be **modular**, **extensible**, and **cross-platform**, allowing easy integration across multiple transport layers (Serial, USB, CAN, TCP, etc.).
 
+## LINK v2 (SDK 2.0) — vue d'ensemble
+
+> Cette section décrit la mise à jour 2.0 (BLE, Wi-Fi, Android, session chiffrée).
+> La suite du document décrit le protocole v1, toujours supporté (rétro-compatibilité).
+
+```
+                ┌──────────────────────── Applications ────────────────────────┐
+                │  Console / WPF / WinUI (Windows)   Android (.NET for Android) │
+                └───────────────────────────────┬──────────────────────────────┘
+                                                │
+┌───────────────────────────── LINK.Client ─────┴───────────────────────────────┐
+│ LinkClient           corrélation requête/réponse (séquence v2 ou APP-ID+cmd v1)│
+│                      évènements non sollicités (EventReceived)                 │
+│ SecureSessionHelper  HELLO (ECDH P-256 + ECDSA), AUTH/SETPWD/CHPWD (PBKDF2)    │
+│ ILinkTrustStore      épinglage des identités (TOFU / strict)                   │
+│ Discovery            ports série (WMI Windows, scrutation Linux/macOS)         │
+│ Helpers v1 (legacy)  AUTH_INIT/AUTH, CHPWD+CRC32                               │
+└───────────────────────────────┬───────────────────────────────────────────────┘
+                                │ ILinkTransport / ILinkSecureTransport
+┌──────────────────────────── LINK.Core ────────────────────────────────────────┐
+│ LinkFrame                 trame logique (APP-ID, commande, arguments, séq.)    │
+│ LinkFrameCodec            v1 texte  ⇄  v2 binaire (COBS, CRC-16, varint)       │
+│ LinkStreamDecoder         flux d'octets → trames (taille bornée)               │
+│ LinkSessionCipher         AES-128-GCM + compteur anti-rejeu                    │
+│ LinkByteTransportBase     tramage + découpage MTU + chiffrement                │
+└──────┬──────────────┬───────────────┬──────────────────┬──────────────────────┘
+       │              │               │                  │
+ Transport.Serial  Transport.Tcp   Transport.Ble     Transport.Android (branche android)
+ (COM, ttyACM)     (+ découverte   (ILinkGattConn.)  (USB host CDC, BluetoothGatt,
+                    UDP LAN)                          scan BLE)
+       │              │               │                  │
+       └──────────────┴───────┬───────┴──────────────────┘
+                              │ octets : trames v1 texte ou v2 COBS, délimiteur 0x00
+                ┌─────────────┴──────────── LINK-Device (C99) ──────────────────┐
+                │ link_core : tramage, session, commandes standard, dispatch    │
+                │ link_crypto : mbedTLS (ou PKA/AES matériel)                   │
+                │ ports/stm32 : USB CDC, UART DMA, ESP-AT Wi-Fi, STM32WB BLE    │
+                │ ports/posix : simulateur hôte (TCP, UDP, PTY)                 │
+                └───────────────────────────────────────────────────────────────┘
+```
+
+### Principes
+
+- **Un seul flux d'octets pour tous les supports** : USB, UART, TCP et BLE
+  transportent exactement les mêmes octets. Ajouter un transport revient à
+  dériver de `LinkByteTransportBase` (3 méthodes) côté client et à écrire une
+  fonction `write` + un appel à `link_channel_input` côté device.
+- **Sécurité de bout en bout au niveau LINK** : elle ne dépend ni de l'appairage
+  BLE, ni de WPA2, ni de TLS. Un pont (passerelle BLE↔Wi-Fi, proxy TCP) ne voit
+  que du chiffré.
+- **Compatibilité** : v1 et v2 cohabitent sur le même lien ; les outils de
+  découverte v1 fonctionnent avec les devices v2.
+
+Spécification détaillée : [`LINK_Protocol_v2.md`](LINK_Protocol_v2.md).
+
 ---
 
 ## Protocol Structure
@@ -198,6 +253,8 @@ LINK.Client.ExampleApp/
 - Future-proof: GETV and RETURN allow flexible extensions without breaking compatibility.
 
 ## Security Options
+
+> ⚠️ **Legacy v1.** Le schéma ci-dessous impose au device de stocker le mot de passe en clair et n'offre ni confidentialité ni intégrité. Les devices v2 utilisent la session sécurisée décrite dans [`LINK_Protocol_v2.md`](LINK_Protocol_v2.md) §4.
 
 LINK supports optional security mechanisms that can be enabled per device or application.
 

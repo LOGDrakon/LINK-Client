@@ -1,29 +1,20 @@
-﻿using System.IO.Ports;
-using System.Text;
-using Link.Core.Frames;
-using Link.Core.Parsing;
+using System.IO.Ports;
 using Link.Core.Transport;
 
 namespace Link.Transport.Serial;
 
-public sealed class LinkSerialTransport : ILinkTransport
+/// <summary>Transport série / USB CDC (port COM, /dev/ttyACM*, /dev/ttyUSB*).</summary>
+public sealed class LinkSerialTransport : LinkByteTransportBase
 {
     private readonly SerialPort _port;
-    private readonly LinkParser _parser = new();
-    private readonly Encoding _encoding = Encoding.ASCII;
-    private readonly int _maxPacketSize;
 
-    public event Action<LinkFrame>? FrameReceived;
-    public event Action<Exception>? TransportError;
-
-    public bool IsOpen => _port.IsOpen;
+    public override bool IsOpen => _port.IsOpen;
 
     public LinkSerialTransport(LinkSerialOptions options)
+        : base(options.MaxPacketSize, options.MaxFrameSize)
     {
         if (string.IsNullOrWhiteSpace(options.PortName))
             throw new ArgumentException(nameof(options.PortName));
-
-        _maxPacketSize = options.MaxPacketSize;
 
         _port = new SerialPort(
             options.PortName,
@@ -31,71 +22,61 @@ public sealed class LinkSerialTransport : ILinkTransport
             options.Parity,
             options.DataBits,
             options.StopBits
-        );
+        )
+        {
+            // Les ports CDC de nombreux MCU n'émettent qu'une fois DTR levé.
+            DtrEnable = options.DtrEnable,
+            RtsEnable = options.RtsEnable,
+        };
 
-        _parser.FrameReceived += f => FrameReceived?.Invoke(f);
+        WireFormat = options.WireFormat;
         _port.DataReceived += OnDataReceived;
     }
 
-    public Task OpenAsync(CancellationToken cancellationToken = default)
+    protected override Task OpenCoreAsync(CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
         _port.Open();
         return Task.CompletedTask;
     }
 
-    public Task CloseAsync(CancellationToken cancellationToken = default)
+    protected override Task CloseCoreAsync(CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-
         if (_port.IsOpen)
             _port.Close();
-
         return Task.CompletedTask;
     }
 
-    public Task SendAsync(LinkFrame frame, CancellationToken cancellationToken = default)
+    protected override ValueTask WriteAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-
         if (!_port.IsOpen)
             throw new InvalidOperationException("Serial port not open");
 
-        var data = _encoding.GetBytes(frame.ToString());
-
-        if (_maxPacketSize <= 0 || data.Length <= _maxPacketSize)
-        {
-            _port.Write(data, 0, data.Length);
-        }
-        else
-        {
-            for (int offset = 0; offset < data.Length; offset += _maxPacketSize)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                int chunkSize = Math.Min(_maxPacketSize, data.Length - offset);
-                _port.Write(data, offset, chunkSize);
-            }
-        }
-
-        return Task.CompletedTask;
+        _port.BaseStream.Write(data.Span);
+        return ValueTask.CompletedTask;
     }
 
     private void OnDataReceived(object? sender, SerialDataReceivedEventArgs e)
     {
         try
         {
-            var text = _port.ReadExisting();
-            _parser.Feed(text);
+            int available = _port.BytesToRead;
+            if (available <= 0)
+                return;
+            var buffer = new byte[available];
+            int read = _port.Read(buffer, 0, available);
+            OnBytesReceived(buffer.AsSpan(0, read));
         }
         catch (Exception ex)
         {
-            TransportError?.Invoke(ex);
+            OnTransportError(ex);
         }
     }
 
-    public async ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
-        await CloseAsync().ConfigureAwait(false);
+        await base.DisposeAsync().ConfigureAwait(false);
         _port.Dispose();
     }
 }

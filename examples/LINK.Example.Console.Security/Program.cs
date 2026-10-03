@@ -2,6 +2,8 @@
 //authenticate if the device is locked, and negotiate encryption using AES128.
 //Use it as a reference for building your own applications with Link.Client.
 
+using Link.Client;
+using Link.Client.Crypto;
 using Link.Client.Extensions;
 using Link.Transport.Serial;
 
@@ -39,6 +41,9 @@ if (info.IsLocked)
             // chpwd.Error is "BAD_OLD_PWD" or "BAD_CRC"
     }
 }
+
+// Clé pré-partagée de démonstration (LINK v2 négocie des clés de session : voir LINK.Example.Console.SecureV2)
+var key = new byte[16];
 
 var crypto = await client.NegotiateEncryptionAsync(
     "DRAGON",

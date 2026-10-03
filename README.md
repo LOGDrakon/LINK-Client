@@ -1,6 +1,12 @@
 # LINK-Client SDK
 
-SDK .NET pour communiquer avec des appareils compatibles **LINK** (USB/Serial), envoyer des commandes, récupérer les informations de l'appareil et gérer l'authentification/chiffrement au niveau client.
+SDK .NET pour communiquer avec des appareils compatibles **LINK** (USB/Série, **Wi-Fi/TCP**, **Bluetooth LE**, **Android**), envoyer des commandes, récupérer les informations de l'appareil et sécuriser les échanges (session chiffrée de bout en bout).
+
+> **Nouveau — LINK v2 (SDK 2.0)** : trames binaires robustes (COBS, séquence, CRC),
+> session chiffrée ECDH + AES-GCM avec identité du device, mot de passe jamais
+> stocké en clair, anti force brute, évènements, BLE et découverte Wi-Fi.
+> Rétro-compatible avec les devices v1. Voir [`docs/LINK_Protocol_v2.md`](docs/LINK_Protocol_v2.md)
+> et la pile device STM32 [LINK-Device](https://github.com/LOGDrakon/LINK-Device).
 
 ## À propos du protocole LINK
 
@@ -18,11 +24,15 @@ Commandes standard côté protocole :
 - `AUTH_INIT` : échange de nonces aléatoires entre client et device (précède `AUTH`).
 - `CHPWD` : changement de mot de passe (`CHPWD\x1f<OLD_HASH>\x1f<NEW_HASH>\x1f<CRC32>`) — réponses : `OK`, `ERR\x1fBAD_OLD_PWD`, `ERR\x1fBAD_CRC`.
 
+Commandes LINK v2 (session chiffrée, voir la spécification) : `HELLO`, `AUTH` (preuve PBKDF2/HMAC),
+`SETPWD`, `CHPWD`, `FRESET`, `DONE`, `PING`, `DISCOVER` (UDP).
+
 ## Contenu du repository
 
 - `src/LINK.Core` : structures de trames, parsing, contrats de transport.
 - `src/LINK.Transport.Serial` : implémentation `SerialPort`.
-- `src/LINK.Transport.Tcp` : implémentation TCP client (simulateur, tests locaux).
+- `src/LINK.Transport.Tcp` : implémentation TCP client + découverte Wi-Fi UDP (`LinkLanDiscovery`).
+- `src/LINK.Transport.Ble` : transport Bluetooth LE indépendant de la plateforme (`ILinkGattConnection`).
 - `src/LINK.Client` : API haut niveau (send/receive, extensions, découverte).
 - `examples/` : exemples console, WPF, WinUI.
 - `tests/` : tests unitaires.
@@ -39,6 +49,7 @@ dotnet add package LINK.Client
 dotnet add package LINK.Core
 dotnet add package LINK.Transport.Serial
 dotnet add package LINK.Transport.Tcp
+dotnet add package LINK.Transport.Ble
 ```
 
 Ou via le Package Manager :
@@ -100,7 +111,45 @@ var info = await dragon.GetDeviceInfoAsync();
 var frame = await dragon.SendAsync("GETTEMP");
 ```
 
-## Simulateur Python TCP
+### 4) Session sécurisée LINK v2
+
+```csharp
+using Link.Client.Security;
+
+var info = await client.GetDeviceInfoAsync("DRAGON");
+if (info.SupportsV2)
+{
+    var session = await client.OpenSecureSessionAsync("DRAGON", new LinkSecureSessionOptions
+    {
+        TrustStore = LinkFileTrustStore.CreateDefault(), // épingle l'identité du device
+    });
+
+    if (!session.IsProvisioned)
+        await client.SetPasswordAsync("motDePasse");      // device neuf
+    else if (!(await client.AuthenticateSecureAsync("motDePasse")).Success)
+        throw new UnauthorizedAccessException();
+
+    await dragon.SendAsync("SETLED", default, "ON");      // chiffré AES-128-GCM
+    await client.CloseSecureSessionAsync();
+}
+```
+
+Exemple complet (découverte Wi-Fi, provisioning, évènements) :
+
+```bash
+dotnet run --project examples/LINK.Example.Console.SecureV2 -- --discover
+dotnet run --project examples/LINK.Example.Console.SecureV2 -- --tcp 127.0.0.1:5000 --password s3cret
+```
+
+Device de test : le simulateur `link_host_device` du dépôt LINK-Device exécute le
+**vrai firmware C** sur le PC (TCP, découverte UDP, port série virtuel).
+
+### Android
+
+Le support Android (.NET for Android : BLE `BluetoothGatt`, USB host CDC, scan BLE)
+est développé sur une branche dédiée, voir `src/LINK.Transport.Android`.
+
+## Simulateur Python TCP (LINK v1)
 
 Pour tester localement sans appareil matériel ni port COM virtuel, lancez le
 simulateur inclus dans `examples/LINK.Device.Simulator/` :
@@ -150,6 +199,10 @@ dotnet run --project <path to the .csproj exemple file>
   - [`docs/LINK_SDK_Documentation.md`](docs/LINK_SDK_Documentation.md)
 - Vue d'architecture globale LINK :
   - [`docs/LINK_Architecture.md`](docs/LINK_Architecture.md)
+- Spécification du protocole v2 (tramage, sécurité, BLE, Wi-Fi) :
+  - [`docs/LINK_Protocol_v2.md`](docs/LINK_Protocol_v2.md)
+- Propositions et feuille de route :
+  - [`docs/LINK_Propositions.md`](docs/LINK_Propositions.md)
 
 ## Licence
 

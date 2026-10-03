@@ -11,6 +11,6 @@ public class LinkFrameTests
     public void ToString_BuildsValidFrame()
     {
         var frame = new LinkFrame("DRAGON", "GETV");
-        Assert.Equal("LINK:DRAGON:GETV\0", frame.ToString());
+        Assert.Equal("LINK\u001fDRAGON\u001fGETV\0", frame.ToString());
     }
 }

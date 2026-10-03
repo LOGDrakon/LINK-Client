@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Tests
+        run: |
+          dotnet test tests/LINK.Core.Tests/LINK.Core.Tests.csproj
+          dotnet test tests/LINK.Client.Tests/LINK.Client.Tests.csproj
+          dotnet test tests/LINK.Transport.Tcp.Tests/LINK.Transport.Tcp.Tests.csproj
+
+      - name: Build exemples multiplateformes
+        run: |
+          dotnet build examples/LINK.Example.Console.SecureV2/LINK.Example.Console.SecureV2.csproj
+          dotnet build examples/LINK.Example.Console.Tcp/LINK.Example.Console.Tcp.csproj
+
+  interop:
+    # Vérifie le SDK contre le vrai firmware C (LINK-Device compilé pour l'hôte).
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: LOGDrakon/LINK-Device
+          path: device
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Device hôte
+        id: device
+        run: |
+          if [ ! -f device/CMakeLists.txt ]; then
+            echo "LINK-Device (branche par défaut) ne contient pas encore la pile C v2 : interop ignorée."
+            echo "skip=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          sudo apt-get update && sudo apt-get install -y libmbedtls-dev cmake
+          cmake -S device -B device/build && cmake --build device/build --target link_host_device
+      - name: Scénario sécurisé de bout en bout
+        if: steps.device.outputs.skip != 'true'
+        run: |
+          ./device/build/link_host_device --storage /tmp/ci.bin --factory-reset &
+          sleep 1
+          dotnet run --project examples/LINK.Example.Console.SecureV2 -- --tcp 127.0.0.1:5000 --password ci-secret
+          dotnet run --project examples/LINK.Example.Console.SecureV2 -- --tcp 127.0.0.1:5000 --password ci-secret
+          kill %1

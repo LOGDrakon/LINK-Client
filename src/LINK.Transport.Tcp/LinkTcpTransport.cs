@@ -1,29 +1,25 @@
 using System.Net.Sockets;
-using System.Text;
-using Link.Core.Frames;
-using Link.Core.Parsing;
 using Link.Core.Transport;
 
 namespace Link.Transport.Tcp;
 
-public sealed class LinkTcpTransport : ILinkTransport
+/// <summary>Transport TCP (device Wi-Fi/Ethernet, simulateur).</summary>
+public sealed class LinkTcpTransport : LinkByteTransportBase
 {
     private readonly LinkTcpOptions _options;
-    private readonly LinkParser _parser = new();
-    private readonly Encoding _encoding = Encoding.ASCII;
-    private readonly int _maxPacketSize;
 
     private TcpClient? _tcpClient;
     private NetworkStream? _stream;
     private CancellationTokenSource? _readCts;
     private Task? _readTask;
 
-    public event Action<LinkFrame>? FrameReceived;
-    public event Action<Exception>? TransportError;
+    /// <summary>La connexion a été fermée par le device.</summary>
+    public event Action? Disconnected;
 
-    public bool IsOpen => _tcpClient?.Connected == true;
+    public override bool IsOpen => _tcpClient?.Connected == true;
 
     public LinkTcpTransport(LinkTcpOptions options)
+        : base(options?.MaxPacketSize ?? 0, options?.MaxFrameSize ?? Link.Core.Framing.LinkFrameCodec.DefaultMaxFrameSize)
     {
         ArgumentNullException.ThrowIfNull(options);
         if (string.IsNullOrWhiteSpace(options.Host))
@@ -32,16 +28,15 @@ public sealed class LinkTcpTransport : ILinkTransport
             throw new ArgumentOutOfRangeException(nameof(options), "Port must be between 1 and 65535.");
 
         _options = options;
-        _maxPacketSize = options.MaxPacketSize;
-        _parser.FrameReceived += f => FrameReceived?.Invoke(f);
+        WireFormat = options.WireFormat;
     }
 
-    public async Task OpenAsync(CancellationToken cancellationToken = default)
+    protected override async Task OpenCoreAsync(CancellationToken cancellationToken)
     {
         if (IsOpen)
             throw new InvalidOperationException("Transport is already open.");
 
-        _tcpClient = new TcpClient();
+        _tcpClient = new TcpClient { NoDelay = true };
 
         using var connectCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         connectCts.CancelAfter(_options.ConnectTimeout);
@@ -54,14 +49,17 @@ public sealed class LinkTcpTransport : ILinkTransport
         _readTask = ReadLoopAsync(_readCts.Token);
     }
 
-    public async Task CloseAsync(CancellationToken cancellationToken = default)
+    protected override async Task CloseCoreAsync(CancellationToken cancellationToken)
     {
         if (_readCts is not null)
         {
             await _readCts.CancelAsync().ConfigureAwait(false);
-            _readCts.Dispose();
-            _readCts = null;
         }
+
+        _stream?.Dispose();
+        _stream = null;
+        _tcpClient?.Dispose();
+        _tcpClient = null;
 
         if (_readTask is not null)
         {
@@ -70,61 +68,47 @@ public sealed class LinkTcpTransport : ILinkTransport
             _readTask = null;
         }
 
-        _stream?.Dispose();
-        _stream = null;
-        _tcpClient?.Dispose();
-        _tcpClient = null;
+        _readCts?.Dispose();
+        _readCts = null;
     }
 
-    public async Task SendAsync(LinkFrame frame, CancellationToken cancellationToken = default)
+    protected override async ValueTask WriteAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken)
     {
-        if (!IsOpen || _stream is null)
+        if (_stream is null)
             throw new InvalidOperationException("TCP transport is not open.");
-
-        var data = _encoding.GetBytes(frame.ToString());
-
-        if (_maxPacketSize <= 0 || data.Length <= _maxPacketSize)
-        {
-            await _stream.WriteAsync(data, cancellationToken).ConfigureAwait(false);
-        }
-        else
-        {
-            for (int offset = 0; offset < data.Length; offset += _maxPacketSize)
-            {
-                int chunkSize = Math.Min(_maxPacketSize, data.Length - offset);
-                await _stream.WriteAsync(
-                    data.AsMemory(offset, chunkSize), cancellationToken).ConfigureAwait(false);
-            }
-        }
+        await _stream.WriteAsync(data, cancellationToken).ConfigureAwait(false);
     }
 
     private async Task ReadLoopAsync(CancellationToken ct)
     {
         var buffer = new byte[4096];
+        var stream = _stream;
         try
         {
-            while (!ct.IsCancellationRequested && _stream is not null)
+            while (!ct.IsCancellationRequested && stream is not null)
             {
-                int bytesRead = await _stream.ReadAsync(buffer, ct).ConfigureAwait(false);
+                int bytesRead = await stream.ReadAsync(buffer, ct).ConfigureAwait(false);
                 if (bytesRead == 0)
+                {
+                    Disconnected?.Invoke();
                     break;
+                }
 
-                var text = _encoding.GetString(buffer, 0, bytesRead);
-                _parser.Feed(text.AsSpan());
+                OnBytesReceived(buffer.AsSpan(0, bytesRead));
             }
         }
         catch (OperationCanceledException)
         {
-            // Normal shutdown
+            // Arrêt normal
+        }
+        catch (ObjectDisposedException)
+        {
+            // Fermeture pendant la lecture
         }
         catch (Exception ex)
         {
-            TransportError?.Invoke(ex);
+            if (!ct.IsCancellationRequested)
+                OnTransportError(ex);
         }
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        await CloseAsync().ConfigureAwait(false);
     }
 }

@@ -13,14 +13,4 @@
     <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Internal\PendingCommand.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-    <Folder Include="Internal\" />
-    <Folder Include="Security\" />
-  </ItemGroup>
-
 </Project>

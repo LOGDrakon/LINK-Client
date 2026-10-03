@@ -10,7 +10,7 @@ public class LinkReturnTests
         LinkFrame? frame = null;
 
         parser.FrameReceived += f => frame = f;
-        parser.Feed("LINK:APP:RETURN:GETV:LINKv1.0\0");
+        parser.Feed("LINK\u001fAPP\u001fRETURN\u001fGETV\u001fLINKv1.0\0");
 
         Assert.NotNull(frame);
         Assert.True(frame!.IsReturn);

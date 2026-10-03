@@ -1,11 +1,20 @@
-﻿using System.Text;
+using System.Text;
 using Link.Core.Frames;
+using Link.Core.Framing;
 
 namespace Link.Core.Parsing;
 
+/// <summary>
+/// Analyseur texte LINK v1 (conservé pour compatibilité).
+/// Pour un flux d'octets pouvant contenir des trames v2, utilisez <see cref="LinkStreamDecoder"/>.
+/// </summary>
 public sealed class LinkParser
 {
     private readonly StringBuilder _buffer = new();
+    private bool _overflow;
+
+    /// <summary>Taille maximale d'une trame ; au-delà, la trame est ignorée.</summary>
+    public int MaxFrameSize { get; init; } = LinkFrameCodec.DefaultMaxFrameSize;
 
     public event Action<LinkFrame>? FrameReceived;
 
@@ -15,12 +24,18 @@ public sealed class LinkParser
         {
             if (c == '\0')
             {
-                TryParseFrame(_buffer.ToString());
+                if (!_overflow)
+                    TryParseFrame(_buffer.ToString());
                 _buffer.Clear();
+                _overflow = false;
+            }
+            else if (_buffer.Length < MaxFrameSize)
+            {
+                _buffer.Append(c);
             }
             else
             {
-                _buffer.Append(c);
+                _overflow = true;
             }
         }
     }
@@ -30,30 +45,8 @@ public sealed class LinkParser
         if (string.IsNullOrWhiteSpace(raw))
             return;
 
-        var parts = raw.Split('\x1f', StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length < 2)
-            return;
-
-        if (parts[0] != "LINK")
-            return;
-
-        // Cas spécial GETAPP
-        if (parts.Length == 2 && parts[1] == "GETAPP")
-        {
-            FrameReceived?.Invoke(new LinkFrame(null, "GETAPP"));
-            return;
-        }
-
-        // Cas standard : LINK\x1fAPP\x1fCOMMAND[\x1fARGS...]
-        if (parts.Length < 3)
-            return;
-
-        string appId = parts[1];
-        string command = parts[2];
-        string[] args = parts.Length > 3
-            ? parts[3..]
-            : Array.Empty<string>();
-
-        FrameReceived?.Invoke(new LinkFrame(appId, command, args));
+        var frame = LinkFrameCodec.DecodeV1(LinkFrameCodec.V1Encoding.GetBytes(raw));
+        if (frame is not null)
+            FrameReceived?.Invoke(frame);
     }
 }

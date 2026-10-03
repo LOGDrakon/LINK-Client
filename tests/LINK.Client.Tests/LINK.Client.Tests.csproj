@@ -26,10 +26,13 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageReference Include="System.IO.Hashing" Version="9.0.5" />
     <PackageReference Include="xunit.v3" Version="3.2.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\LINK.Client\LINK.Client.csproj" />
+    <ProjectReference Include="..\..\src\LINK.Transport.Tcp\LINK.Transport.Tcp.csproj" />
+    <ProjectReference Include="..\..\src\LINK.Transport.Ble\LINK.Transport.Ble.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,8 @@
 
   <Folder Name="/docs/">
     <File Path="docs/LINK_Architecture.md" />
+    <File Path="docs/LINK_Protocol_v2.md" />
+    <File Path="docs/LINK_Propositions.md" />
   </Folder>
 
   <Folder Name="/src/">
@@ -9,6 +11,7 @@
     <Project Path="src/LINK.Core/LINK.Core.csproj" />
     <Project Path="src/LINK.Transport.Serial/LINK.Transport.Serial.csproj" />
     <Project Path="src/LINK.Transport.Tcp/LINK.Transport.Tcp.csproj" />
+    <Project Path="src/LINK.Transport.Ble/LINK.Transport.Ble.csproj" />
   </Folder>
 
   <Folder Name="/examples/">
@@ -31,6 +34,10 @@
 
     <Folder Name="/examples/LINK.Example.Console.Tcp/">
       <Project Path="examples/LINK.Example.Console.Tcp/LINK.Example.Console.Tcp.csproj" />
+    </Folder>
+
+    <Folder Name="/examples/LINK.Example.Console.SecureV2/">
+      <Project Path="examples/LINK.Example.Console.SecureV2/LINK.Example.Console.SecureV2.csproj" />
     </Folder>
 
     <Folder Name="/examples/LINK.Example.WinUI.Discovery/">

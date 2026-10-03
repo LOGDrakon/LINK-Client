@@ -1,3 +1,5 @@
+using Link.Core.Framing;
+
 namespace Link.Transport.Tcp;
 
 public sealed class LinkTcpOptions
@@ -21,4 +23,10 @@ public sealed class LinkTcpOptions
     /// Set to 0 to disable chunking.
     /// </summary>
     public int MaxPacketSize { get; set; } = 64;
+
+    /// <summary>Taille maximale d'une trame reçue (au-delà : ignorée).</summary>
+    public int MaxFrameSize { get; set; } = LinkFrameCodec.DefaultMaxFrameSize;
+
+    /// <summary>Format d'émission initial (bascule automatique en v2 avec <c>OpenSecureSessionAsync</c>).</summary>
+    public LinkWireFormat WireFormat { get; set; } = LinkWireFormat.V1Text;
 }

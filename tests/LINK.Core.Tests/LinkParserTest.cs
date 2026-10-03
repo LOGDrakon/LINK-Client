@@ -10,7 +10,7 @@ public class LinkParserTests
         LinkFrame? received = null;
 
         parser.FrameReceived += f => received = f;
-        parser.Feed("LINK:DRAGON:GETV\0");
+        parser.Feed("LINK\u001fDRAGON\u001fGETV\0");
 
         Assert.NotNull(received);
         Assert.Equal("DRAGON", received!.AppId);
@@ -24,7 +24,7 @@ public class LinkParserTests
         LinkFrame? received = null;
 
         parser.FrameReceived += f => received = f;
-        parser.Feed("LINK:APP:CMD:ARG1:ARG2\0");
+        parser.Feed("LINK\u001fAPP\u001fCMD\u001fARG1\u001fARG2\0");
 
         Assert.Equal(2, received!.Arguments.Count);
         Assert.Equal("ARG1", received.Arguments[0]);
@@ -38,7 +38,7 @@ public class LinkParserTests
 
         parser.FrameReceived += f => received = f;
 
-        parser.Feed("LINK:DRA");
+        parser.Feed("LINK\u001fDRA");
         Assert.Null(received);
 
         parser.Feed("GON:GETV\0");
@@ -53,7 +53,7 @@ public class LinkParserTests
 
         parser.FrameReceived += _ => count++;
 
-        parser.Feed("LINK:A:CMD\0LINK:B:CMD\0");
+        parser.Feed("LINK\u001fA\u001fCMD\0LINK\u001fB\u001fCMD\0");
         Assert.Equal(2, count);
     }
 

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>LINK.Transport.Ble</PackageId>
+    <Description>Transport Bluetooth Low Energy (GATT) pour le SDK LINK. Indépendant de la plateforme : fournissez une implémentation de ILinkGattConnection (Android, Windows, Plugin.BLE…).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LINK.Core\LINK.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -29,6 +29,7 @@ jobs:
           dotnet restore src/LINK.Core/LINK.Core.csproj
           dotnet restore src/LINK.Transport.Serial/LINK.Transport.Serial.csproj
           dotnet restore src/LINK.Transport.Tcp/LINK.Transport.Tcp.csproj
+          dotnet restore src/LINK.Transport.Ble/LINK.Transport.Ble.csproj
           dotnet restore src/LINK.Client/LINK.Client.csproj
 
       - name: Build
@@ -36,6 +37,7 @@ jobs:
           dotnet build src/LINK.Core/LINK.Core.csproj -c Release --no-restore -p:Version=${{ steps.version.outputs.VERSION }}
           dotnet build src/LINK.Transport.Serial/LINK.Transport.Serial.csproj -c Release --no-restore -p:Version=${{ steps.version.outputs.VERSION }}
           dotnet build src/LINK.Transport.Tcp/LINK.Transport.Tcp.csproj -c Release --no-restore -p:Version=${{ steps.version.outputs.VERSION }}
+          dotnet build src/LINK.Transport.Ble/LINK.Transport.Ble.csproj -c Release --no-restore -p:Version=${{ steps.version.outputs.VERSION }}
           dotnet build src/LINK.Client/LINK.Client.csproj -c Release --no-restore -p:Version=${{ steps.version.outputs.VERSION }}
 
       - name: Pack
@@ -43,6 +45,7 @@ jobs:
           dotnet pack src/LINK.Core/LINK.Core.csproj -c Release --no-build -o nupkgs/ -p:Version=${{ steps.version.outputs.VERSION }}
           dotnet pack src/LINK.Transport.Serial/LINK.Transport.Serial.csproj -c Release --no-build -o nupkgs/ -p:Version=${{ steps.version.outputs.VERSION }}
           dotnet pack src/LINK.Transport.Tcp/LINK.Transport.Tcp.csproj -c Release --no-build -o nupkgs/ -p:Version=${{ steps.version.outputs.VERSION }}
+          dotnet pack src/LINK.Transport.Ble/LINK.Transport.Ble.csproj -c Release --no-build -o nupkgs/ -p:Version=${{ steps.version.outputs.VERSION }}
           dotnet pack src/LINK.Client/LINK.Client.csproj -c Release --no-build -o nupkgs/ -p:Version=${{ steps.version.outputs.VERSION }}
 
       - name: Push to NuGet.org

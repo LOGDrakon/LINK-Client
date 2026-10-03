@@ -287,3 +287,69 @@ finally
 - Voir les exemples prêts à lancer dans `examples/`.
 - Adapter les commandes custom (`GETTEMP`, `SETCFG`, etc.) selon votre firmware.
 - Pour la vision d’ensemble du protocole et des packages, consulter `docs/LINK_Architecture.md`.
+
+---
+
+## 9. LINK v2 : session sécurisée, BLE, Wi-Fi (SDK 2.0)
+
+Spécification : [`LINK_Protocol_v2.md`](LINK_Protocol_v2.md) · Idées / feuille de route : [`LINK_Propositions.md`](LINK_Propositions.md)
+
+### 9.1 Session chiffrée
+
+```csharp
+var info = await client.GetDeviceInfoAsync("DRAGON");      // v1, compatible partout
+if (info.SupportsV2)                                         // PROTO=1,2
+{
+    var session = await client.OpenSecureSessionAsync("DRAGON", new LinkSecureSessionOptions
+    {
+        TrustStore = LinkFileTrustStore.CreateDefault(),     // épinglage TOFU de l'identité
+        // ExpectedFingerprint = "a1b2c3d4e5f60718",         // ou empreinte de l'étiquette (strict)
+    });
+
+    if (!session.IsProvisioned)
+        await client.SetPasswordAsync("motDePasse");         // device neuf
+    else
+    {
+        var auth = await client.AuthenticateSecureAsync("motDePasse");
+        // auth.Error : BAD_PWD (auth.RemainingAttempts) / LOCKED (auth.RetryAfter)
+    }
+
+    var frame = await client.SendCommandAsync("DRAGON", "SETLED", default, "ON"); // chiffré
+    await client.ChangePasswordSecureAsync("motDePasse", "nouveau");
+    await client.CloseSecureSessionAsync();                  // DONE + effacement des clés
+}
+```
+
+Après `OpenSecureSessionAsync`, le transport passe en format binaire v2 et toutes
+les trames (requêtes, réponses, évènements) sont chiffrées en AES-128-GCM.
+Erreurs : `LinkSecurityException` (signature invalide, empreinte inattendue),
+`LinkDeviceErrorException` (`ERR <code>` du device).
+
+### 9.2 Évènements
+
+```csharp
+client.EventReceived += frame => Console.WriteLine($"{frame.Command} {string.Join(' ', frame.Arguments)}");
+```
+
+### 9.3 Wi-Fi : découverte UDP
+
+```csharp
+var devices = await LinkLanDiscovery.ScanAsync(appIdFilter: "DRAGON");
+var transport = new LinkTcpTransport(devices[0].ToTcpOptions());
+```
+
+### 9.4 Bluetooth Low Energy
+
+`LINK.Transport.Ble` est indépendant de la plateforme : fournissez une
+implémentation de `ILinkGattConnection` (Android : `LINK.Transport.Android`,
+Windows : `Windows.Devices.Bluetooth`, MAUI : Plugin.BLE…).
+
+```csharp
+var transport = new LinkBleTransport(gattConnection, LinkBleProfile.Link); // ou NordicUart, Hm10
+```
+
+### 9.5 Écrire un transport
+
+Dérivez de `LinkByteTransportBase` (`OpenCoreAsync`, `CloseCoreAsync`, `WriteAsync`)
+et appelez `OnBytesReceived` à la réception : tramage v1/v2, découpage MTU et
+chiffrement sont gérés par la classe de base.
