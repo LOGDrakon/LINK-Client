@@ -24,6 +24,9 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      - name: Workload Android
+        run: dotnet workload install android
+
       - name: Restore dependencies
         run: |
           dotnet restore src/LINK.Core/LINK.Core.csproj
@@ -31,6 +34,7 @@ jobs:
           dotnet restore src/LINK.Transport.Tcp/LINK.Transport.Tcp.csproj
           dotnet restore src/LINK.Transport.Ble/LINK.Transport.Ble.csproj
           dotnet restore src/LINK.Client/LINK.Client.csproj
+          dotnet restore src/LINK.Transport.Android/LINK.Transport.Android.csproj
 
       - name: Build
         run: |
@@ -39,6 +43,7 @@ jobs:
           dotnet build src/LINK.Transport.Tcp/LINK.Transport.Tcp.csproj -c Release --no-restore -p:Version=${{ steps.version.outputs.VERSION }}
           dotnet build src/LINK.Transport.Ble/LINK.Transport.Ble.csproj -c Release --no-restore -p:Version=${{ steps.version.outputs.VERSION }}
           dotnet build src/LINK.Client/LINK.Client.csproj -c Release --no-restore -p:Version=${{ steps.version.outputs.VERSION }}
+          dotnet build src/LINK.Transport.Android/LINK.Transport.Android.csproj -c Release --no-restore -p:Version=${{ steps.version.outputs.VERSION }}
 
       - name: Pack
         run: |
@@ -47,6 +52,7 @@ jobs:
           dotnet pack src/LINK.Transport.Tcp/LINK.Transport.Tcp.csproj -c Release --no-build -o nupkgs/ -p:Version=${{ steps.version.outputs.VERSION }}
           dotnet pack src/LINK.Transport.Ble/LINK.Transport.Ble.csproj -c Release --no-build -o nupkgs/ -p:Version=${{ steps.version.outputs.VERSION }}
           dotnet pack src/LINK.Client/LINK.Client.csproj -c Release --no-build -o nupkgs/ -p:Version=${{ steps.version.outputs.VERSION }}
+          dotnet pack src/LINK.Transport.Android/LINK.Transport.Android.csproj -c Release --no-build -o nupkgs/ -p:Version=${{ steps.version.outputs.VERSION }}
 
       - name: Push to NuGet.org
         run: dotnet nuget push "nupkgs/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

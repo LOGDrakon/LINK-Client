@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ouvre l'application quand un device LINK USB est branché (OTG). -->
+<resources>
+  <!-- STM32 Virtual COM Port (ST VID 0x0483, PID 0x5740) -->
+  <usb-device vendor-id="1155" product-id="22336" />
+  <!-- Espressif USB CDC (ESP32-S2/S3) -->
+  <usb-device vendor-id="12346" />
+</resources>

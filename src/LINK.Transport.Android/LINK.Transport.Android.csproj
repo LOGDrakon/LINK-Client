@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>23</SupportedOSPlatformVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>LINK.Transport.Android</PackageId>
+    <Description>Transports Android pour le SDK LINK : Bluetooth LE (BluetoothGatt, scan) et USB host (CDC-ACM, ex. STM32 Virtual COM Port).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LINK.Core\LINK.Core.csproj" />
+    <ProjectReference Include="..\LINK.Transport.Ble\LINK.Transport.Ble.csproj" />
+  </ItemGroup>
+
+</Project>

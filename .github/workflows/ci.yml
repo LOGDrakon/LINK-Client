@@ -26,6 +26,24 @@ jobs:
           dotnet build examples/LINK.Example.Console.SecureV2/LINK.Example.Console.SecureV2.csproj
           dotnet build examples/LINK.Example.Console.Tcp/LINK.Example.Console.Tcp.csproj
 
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'microsoft'
+          java-version: '17'
+      - name: Workload Android
+        run: dotnet workload install android
+      - name: Build
+        run: |
+          dotnet build src/LINK.Transport.Android/LINK.Transport.Android.csproj
+          dotnet build examples/LINK.Example.Android/LINK.Example.Android.csproj
+
   interop:
     # Vérifie le SDK contre le vrai firmware C (LINK-Device compilé pour l'hôte).
     runs-on: ubuntu-24.04

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>23</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <ApplicationId>com.logdrakon.link.example</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\LINK.Client\LINK.Client.csproj" />
+    <ProjectReference Include="..\..\src\LINK.Transport.Tcp\LINK.Transport.Tcp.csproj" />
+    <ProjectReference Include="..\..\src\LINK.Transport.Android\LINK.Transport.Android.csproj" />
+  </ItemGroup>
+
+</Project>
